@@ -12,31 +12,34 @@
 
     <groupId>com.github.ships</groupId>
     <artifactId>ships</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>ships</name>
-    <description>ships</description>
+    <description>Battleships Online Game</description>
 
     <properties>
         <java.version>17</java.version>
-        <version.maven>3.8.4</version.maven>
-
+        <version.maven>3.8.5</version.maven>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <version.jacoco>0.8.7</version.jacoco>
-        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <version.enforcer>3.0.0</version.enforcer>
-        <version.surefire>3.0.0-M6</version.surefire>
-        <version.failsafe>3.0.0-M6</version.failsafe>
-        <version.maven-checkstyle-plugin>3.1.2</version.maven-checkstyle-plugin>
-        <version.checkstyle>10.2</version.checkstyle>
-        <version.maven-jxr-plugin>3.2.0</version.maven-jxr-plugin>
-        <tinylog-api.version>2.4.1</tinylog-api.version>
-        <tinylog-impl.version>2.4.1</tinylog-impl.version>
-        <slf4j-tinylog.version>2.4.1</slf4j-tinylog.version>
-        <version.testng>7.5</version.testng>
-        <spring-data-mongodb.version>3.3.4</spring-data-mongodb.version>
-        <mockito-core.version>4.4.0</mockito-core.version>
-        <lombok.version>1.18.24</lombok.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <version.dependency.spring-data-mongodb>3.3.4</version.dependency.spring-data-mongodb>
+        <version.dependency.org.mapstruct>1.4.2.Final</version.dependency.org.mapstruct>
+        <version.dependency.tinylog-api>2.4.1</version.dependency.tinylog-api>
+        <version.dependency.tinylog-impl>2.4.1</version.dependency.tinylog-impl>
+        <version.dependency.slf4j-tinylog>2.4.1</version.dependency.slf4j-tinylog>
+        <version.dependency.jacoco>0.8.7</version.dependency.jacoco>
+        <version.dependency.testng>7.5</version.dependency.testng>
+        <version.dependency.mockito-core>4.4.0</version.dependency.mockito-core>
+        <version.dependency.lombok>1.18.24</version.dependency.lombok>
+
+        <version.plugin.maven-compiler-plugin>3.10.1</version.plugin.maven-compiler-plugin>
+        <version.plugin.enforcer>3.0.0</version.plugin.enforcer>
+        <version.plugin.surefire>3.0.0-M6</version.plugin.surefire>
+        <version.plugin.failsafe>3.0.0-M6</version.plugin.failsafe>
+        <version.plugin.maven-checkstyle-plugin>3.1.2</version.plugin.maven-checkstyle-plugin>
+        <version.plugin.checkstyle>10.2</version.plugin.checkstyle>
+        <version.plugin.maven-jxr-plugin>3.2.0</version.plugin.maven-jxr-plugin>
     </properties>
 
     <dependencies>
@@ -83,73 +86,65 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>${version.dependency.spring-data-mongodb}</version>
+        </dependency>
         <!-- Checkout https://mapstruct.org/ to see how to use -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${org.mapstruct.version}</version>
+            <version>${version.dependency.org.mapstruct}</version>
         </dependency>
-
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-api</artifactId>
-            <version>${tinylog-api.version}</version>
+            <version>${version.dependency.tinylog-api}</version>
         </dependency>
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-impl</artifactId>
-            <version>${tinylog-impl.version}</version>
+            <version>${version.dependency.tinylog-impl}</version>
         </dependency>
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>slf4j-tinylog</artifactId>
-            <version>${slf4j-tinylog.version}</version>
+            <version>${version.dependency.slf4j-tinylog}</version>
         </dependency>
-        <!--  TestNG: testing framework for Java -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${version.testng}</version>
+            <version>${version.dependency.testng}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            <version>${spring-data-mongodb.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito-core.version}</version>
+            <version>${version.dependency.mockito-core}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <version>${version.dependency.lombok}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!--https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${version.surefire}</version>
+                <version>${version.plugin.surefire}</version>
             </plugin>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${version.failsafe}</version>
+                <version>${version.plugin.failsafe}</version>
                 <executions>
                     <execution>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
@@ -157,12 +152,10 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${version.enforcer}</version>
+                <version>${version.plugin.enforcer}</version>
                 <executions>
                     <execution>
                         <id>enforce-maven</id>
@@ -187,12 +180,12 @@
             1. To generate the report run 'mvn checkstyle:checkstyle'.
                The report will be located at '/target/site/checkstyle.html'
             2. To fail the build in case of style errors,
-               in 'execution' part there should be a line
-               '<phase>package</phase>' -->
+               in 'execution' part, before '<goals>' section,
+                there should be a line '<phase>package</phase>' -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${version.maven-checkstyle-plugin}</version>
+                <version>${version.plugin.maven-checkstyle-plugin}</version>
                 <configuration>
                     <configLocation>sun_checks.xml</configLocation>
                 </configuration>
@@ -200,24 +193,21 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>${version.checkstyle}</version>
+                        <version>${version.plugin.checkstyle}</version>
                     </dependency>
                 </dependencies>
                 <executions>
                     <execution>
-<!--                        <phase>package</phase> &lt;!&ndash; If this line is active, the build will fail in case of style errors&ndash;&gt;-->
                         <goals>
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-
-            <!--  JaCoCo plugin: test coverage tool -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${version.jacoco}</version>
+                <version>${version.dependency.jacoco}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -234,24 +224,21 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
+                <version>${version.plugin.maven-compiler-plugin}</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>${org.mapstruct.version}</version>
+                            <version>${version.dependency.org.mapstruct}</version>
                         </path>
-                        <!-- other annotation processors -->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
@@ -259,13 +246,13 @@
     </build>
 
     <reporting>
-        <!-- This plugin is needed for maven-checkstyle-plugin
-             to work correctly -->
+        <!-- This plugin is needed for
+             maven-checkstyle-plugin to work correctly -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>${version.maven-jxr-plugin}</version>
+                <version>${version.plugin.maven-jxr-plugin}</version>
             </plugin>
         </plugins>
     </reporting>
