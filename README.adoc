@@ -9,3 +9,16 @@ Damian Ciepiela +
 Herman Ciechanowiec +
 Kamil Wilk +
 Maciej Blok
+
+== Build
+
+To build the project run `mvn clean package` command
+
+== Run
+
+To start the program run the `.jar` artifact with `java -jar` program
+
+== Prerequisites
+
+* Apache Maven
+* Java 17
