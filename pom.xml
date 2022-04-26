@@ -18,12 +18,11 @@
 
     <properties>
         <java.version>17</java.version>
-        <version.maven>3.8.5</version.maven>
+        <version.maven>3.8.4</version.maven>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <version.dependency.spring-data-mongodb>3.3.4</version.dependency.spring-data-mongodb>
         <version.dependency.org.mapstruct>1.4.2.Final</version.dependency.org.mapstruct>
         <version.dependency.tinylog-api>2.4.1</version.dependency.tinylog-api>
         <version.dependency.tinylog-impl>2.4.1</version.dependency.tinylog-impl>
@@ -40,6 +39,8 @@
         <version.plugin.maven-checkstyle-plugin>3.1.2</version.plugin.maven-checkstyle-plugin>
         <version.plugin.checkstyle>10.2</version.plugin.checkstyle>
         <version.plugin.maven-jxr-plugin>3.2.0</version.plugin.maven-jxr-plugin>
+        <spring-boot-starter-data-mongodb.version>2.6.7</spring-boot-starter-data-mongodb.version>
+        <hibernate-validator.version>7.0.4.Final</hibernate-validator.version>
     </properties>
 
     <dependencies>
@@ -71,12 +72,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
@@ -87,9 +82,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            <version>${version.dependency.spring-data-mongodb}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>${spring-boot-starter-data-mongodb.version}</version>
         </dependency>
         <!-- Checkout https://mapstruct.org/ to see how to use -->
         <dependency>
@@ -130,6 +125,12 @@
             <version>${version.dependency.lombok}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
