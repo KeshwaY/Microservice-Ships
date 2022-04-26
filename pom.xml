@@ -14,12 +14,11 @@
     <artifactId>ships</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ships</name>
-    <description>ships</description>
+    <description>Battleships Online Game</description>
 
     <properties>
         <java.version>17</java.version>
         <version.maven>3.8.4</version.maven>
-
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <version.jacoco>0.8.7</version.jacoco>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
@@ -89,7 +88,6 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-api</artifactId>
@@ -105,27 +103,23 @@
             <artifactId>slf4j-tinylog</artifactId>
             <version>${slf4j-tinylog.version}</version>
         </dependency>
-        <!--  TestNG: testing framework for Java -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${version.testng}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>${spring-data-mongodb.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -136,14 +130,11 @@
 
     <build>
         <plugins>
-            <!--https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${version.surefire}</version>
             </plugin>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-failsafe-plugin -->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${version.failsafe}</version>
@@ -157,8 +148,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-enforcer-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
@@ -212,8 +201,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--  JaCoCo plugin: test coverage tool -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -234,12 +221,10 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -251,7 +236,6 @@
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${org.mapstruct.version}</version>
                         </path>
-                        <!-- other annotation processors -->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
@@ -259,8 +243,8 @@
     </build>
 
     <reporting>
-        <!-- This plugin is needed for maven-checkstyle-plugin
-             to work correctly -->
+        <!-- This plugin is needed for
+             maven-checkstyle-plugin to work correctly -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

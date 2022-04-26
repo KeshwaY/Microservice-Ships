@@ -1,0 +1,11 @@
+= Battleships
+
+== Overview
+This project is a Java implementation of the game _Battleships_.
+
+== Authors
+Anna Ovcharenko +
+Damian Ciepiela +
+Herman Ciechanowiec +
+Kamil Wilk +
+Maciej Blok
