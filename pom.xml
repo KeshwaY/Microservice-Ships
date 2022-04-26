@@ -30,6 +30,9 @@
         <version.maven-checkstyle-plugin>3.1.2</version.maven-checkstyle-plugin>
         <version.checkstyle>10.2</version.checkstyle>
         <version.maven-jxr-plugin>3.2.0</version.maven-jxr-plugin>
+        <tinylog-api.version>2.4.1</tinylog-api.version>
+        <tinylog-impl.version>2.4.1</tinylog-impl.version>
+        <slf4j-tinylog.version>2.4.1</slf4j-tinylog.version>
     </properties>
 
     <dependencies>
@@ -40,6 +43,24 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jul-to-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,6 +78,22 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-api</artifactId>
+            <version>${tinylog-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>tinylog-impl</artifactId>
+            <version>${tinylog-impl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>slf4j-tinylog</artifactId>
+            <version>${slf4j-tinylog.version}</version>
         </dependency>
     </dependencies>
 
