@@ -33,6 +33,10 @@
         <tinylog-api.version>2.4.1</tinylog-api.version>
         <tinylog-impl.version>2.4.1</tinylog-impl.version>
         <slf4j-tinylog.version>2.4.1</slf4j-tinylog.version>
+        <version.testng>7.5</version.testng>
+        <spring-data-mongodb.version>3.3.4</spring-data-mongodb.version>
+        <mockito-core.version>4.4.0</mockito-core.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
     <dependencies>
@@ -72,6 +76,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit</groupId>
+                    <artifactId>jupiter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Checkout https://mapstruct.org/ to see how to use -->
         <dependency>
@@ -94,6 +104,33 @@
             <groupId>org.tinylog</groupId>
             <artifactId>slf4j-tinylog</artifactId>
             <version>${slf4j-tinylog.version}</version>
+        </dependency>
+        <!--  TestNG: testing framework for Java -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${version.testng}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>${spring-data-mongodb.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
