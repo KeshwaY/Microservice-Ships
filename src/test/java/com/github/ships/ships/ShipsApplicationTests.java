@@ -5,12 +5,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ShipsApplicationTests {
-
-    /**
-     * Default test to check if application boots
-     */
-    @Test
-    void contextLoads() {
-    }
-
 }
