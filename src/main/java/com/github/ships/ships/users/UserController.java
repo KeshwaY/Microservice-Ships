@@ -1,5 +1,6 @@
-package com.github.ships.ships;
+package com.github.ships.ships.users;
 
+import com.github.ships.ships.GenericResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

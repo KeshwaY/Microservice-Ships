@@ -1,10 +1,11 @@
-package com.github.ships.ships;
+package com.github.ships.ships.users;
 
+import com.github.ships.ships.GenericResponseDto;
+import com.github.ships.ships.NotFoundException;
+import com.github.ships.ships.ResourceAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Service
 public class UserService {

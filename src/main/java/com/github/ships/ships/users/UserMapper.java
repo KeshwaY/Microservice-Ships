@@ -1,4 +1,4 @@
-package com.github.ships.ships;
+package com.github.ships.ships.users;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
