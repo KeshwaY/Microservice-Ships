@@ -31,4 +31,15 @@ public class BoardService {
         return result;
     }
 
+    /**
+     *
+     * @param gameId
+     * @param cellId
+     * @return true if shot is legal and was placed
+     *          false if not legal
+     */
+    public boolean placeShot(String gameId, int cellId){
+        return false;
+    }
+
 }
