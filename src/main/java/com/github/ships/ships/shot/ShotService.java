@@ -16,13 +16,14 @@ public class ShotService {
 
     public ShotResultDTO placeShot(ShotPostDTO shotPostDTO) {
         ShotResult shotResult = new ShotResult();
-        ShotLegality shotLegality = defineShotLegality(shotPostDTO);
+        ShotLegality shotLegality = placeShotOnBoard(shotPostDTO);
         shotResult.setShotLegality(shotLegality);
-        // TODO: PROCEDURE FOR LEGAL SHOT...
+        //TODO: START FROM HERE!
+        //TODO: [NOW!] PROCEDURE FOR A LEGAL SHOT...
         return mapper.shotResultToShotResultDTO(shotResult);
     }
 
-    private ShotLegality defineShotLegality(ShotPostDTO shotPostDTO) {
+    private ShotLegality placeShotOnBoard(ShotPostDTO shotPostDTO) {
         boolean isLegalShot = boardService.placeShot(shotPostDTO);
         return ShotLegality.obtainShotLegality(isLegalShot);
     }
