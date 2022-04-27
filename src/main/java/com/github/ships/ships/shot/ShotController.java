@@ -1,4 +1,4 @@
-package com.github.ships.ships;
+package com.github.ships.ships.shot;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-/**
- * @author Anna Ovcharenko
- */
 @RestController
 @RequestMapping("/api/v1/shots")
 public class ShotController {
@@ -21,10 +18,13 @@ public class ShotController {
       this.service = shotService;
    }
 
+   //TODO: Require all fields of the request body
    @PostMapping
    ResponseEntity<ShotResultDTO> placeShot(
-           @Valid @RequestBody ShotPostDTO shotPostDTO)
-   {
-      return ResponseEntity.ok(service.placeShot(shotPostDTO));
+           @Valid
+           @RequestBody
+           ShotPostDTO shotPostDTO) {
+      ShotResultDTO shotResultDTO = service.placeShot(shotPostDTO);
+      return ResponseEntity.ok(shotResultDTO);
    }
 }

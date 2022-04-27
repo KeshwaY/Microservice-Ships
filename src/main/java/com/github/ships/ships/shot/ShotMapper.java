@@ -1,10 +1,7 @@
-package com.github.ships.ships;
+package com.github.ships.ships.shot;
 
 import org.mapstruct.Mapper;
 
-/**
- * @author Anna Ovcharenko
- */
 @Mapper(
         componentModel = "spring"
 )

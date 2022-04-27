@@ -1,10 +1,8 @@
-package com.github.ships.ships;
+package com.github.ships.ships.shot;
 
+import com.github.ships.ships.BoardService;
 import org.springframework.stereotype.Service;
 
-/**
- * @author Anna Ovcharenko
- */
 @Service
 public class ShotService {
 
@@ -18,11 +16,14 @@ public class ShotService {
 
     public ShotResultDTO placeShot(ShotPostDTO shotPostDTO) {
         ShotResult shotResult = new ShotResult();
-        if (boardService.placeShot(shotPostDTO.getGameId(), shotPostDTO.getCellId())) {
-            shotResult.setStatus(ShotStatus.HITWATER);
-        } else {
-            shotResult.setStatus(ShotStatus.ILLEGAL);
-        }
+        ShotLegality shotLegality = defineShotLegality(shotPostDTO);
+        shotResult.setShotLegality(shotLegality);
+        // TODO: PROCEDURE FOR LEGAL SHOT...
         return mapper.shotResultToShotResultDTO(shotResult);
+    }
+
+    private ShotLegality defineShotLegality(ShotPostDTO shotPostDTO) {
+        boolean isLegalShot = boardService.placeShot(shotPostDTO);
+        return ShotLegality.obtainShotLegality(isLegalShot);
     }
 }
