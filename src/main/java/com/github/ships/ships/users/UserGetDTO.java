@@ -1,4 +1,4 @@
-package com.github.ships.ships;
+package com.github.ships.ships.users;
 
 import lombok.Data;
 import lombok.NonNull;

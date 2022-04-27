@@ -42,6 +42,7 @@
         <spring-boot-starter-data-mongodb.version>2.6.7</spring-boot-starter-data-mongodb.version>
         <hibernate-validator.version>7.0.4.Final</hibernate-validator.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <spring-boot-starter-security.version>2.6.7</spring-boot-starter-security.version>
     </properties>
 
     <dependencies>
@@ -86,6 +87,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
             <version>${spring-boot-starter-data-mongodb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot-starter-security.version}</version>
         </dependency>
         <!-- Checkout https://mapstruct.org/ to see how to use -->
         <dependency>
