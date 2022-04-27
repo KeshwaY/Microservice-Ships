@@ -41,16 +41,12 @@ public class AuthorityService implements GenericCRUDService<AuthorityDTO, Author
                 .toList();
     }
 
+    // TODO: fix logic
     @Override
     public AuthorityDTO update(String name, AuthorityDTO authorityDTO) {
-        Optional<Authority> optionalAuthority = repository.findByName(name);
-        Authority authority;
-        if (optionalAuthority.isPresent()) {
-            authority = optionalAuthority.get();
-            authority.setName(authorityDTO.getName());
-        } else {
-            authority = mapper.authorityDtoToAuthority(authorityDTO);
-        }
+        Authority authority = repository.findByName(name).orElse(mapper.authorityDtoToAuthority(authorityDTO));
+        if (repository.findByName(authorityDTO.getName()).isPresent()) throw new ResourceAlreadyExistsException();
+        authority.setName(authorityDTO.getName());
         return mapper.authorityToAuthorityDto(repository.save(authority));
     }
 
