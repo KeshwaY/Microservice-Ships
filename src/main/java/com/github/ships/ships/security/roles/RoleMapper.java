@@ -1,7 +1,6 @@
 package com.github.ships.ships.security.roles;
 
 import com.github.ships.ships.security.authorities.Authority;
-import com.github.ships.ships.security.authorities.AuthorityDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

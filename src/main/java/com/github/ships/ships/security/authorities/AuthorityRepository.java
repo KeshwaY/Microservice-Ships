@@ -1,6 +1,5 @@
 package com.github.ships.ships.security.authorities;
 
-import lombok.NonNull;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Collection;

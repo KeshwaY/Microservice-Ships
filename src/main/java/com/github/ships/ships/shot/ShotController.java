@@ -18,7 +18,7 @@ public class ShotController {
       this.service = shotService;
    }
 
-   //TODO: Require all fields of the request body
+   //TODO: Require all fields of the request to have body
    @PostMapping
    ResponseEntity<ShotResultDTO> placeShot(
            @Valid

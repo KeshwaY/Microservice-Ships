@@ -7,7 +7,6 @@ import com.github.ships.ships.abstraction.GenericCRUDService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class AuthorityService implements GenericCRUDService<AuthorityDTO, AuthorityDTO, AuthorityDTO, GenericResponseDto> {
