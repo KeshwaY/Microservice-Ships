@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 )
 interface GameMapper {
 
-    GameGetDTO gameToGameGetDto(Game game);
+    GameCreatedDTO gameToGameCreatedDTO(Game game, BoardGetDTO boardGetDTO);
 
 }
