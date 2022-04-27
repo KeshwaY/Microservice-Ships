@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Validated
 @RestController
 @RequestMapping("/api/v1/games")
@@ -16,14 +18,9 @@ class GameController {
     }
 
     @PostMapping
-    ResponseEntity<GameGetDTO> create() {
-        return ResponseEntity.ok(service.create());
-    }
-
-    @GetMapping("/{id}")
-    ResponseEntity<GameGetDTO> get(
-            @PathVariable String id
+    ResponseEntity<GameCreatedDTO> create(
+            @Valid @RequestBody GamePostDTO gamePostDTO
     ) {
-        return ResponseEntity.ok(service.get(id));
+        return ResponseEntity.ok(service.create(gamePostDTO));
     }
 }

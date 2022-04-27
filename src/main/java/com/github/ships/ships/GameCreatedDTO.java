@@ -1,10 +1,13 @@
 package com.github.ships.ships;
 
-public class GameGetDTO {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class GameCreatedDTO {
 
     private String id;
+    private BoardGetDTO boardGetDTO;
 
-    public GameGetDTO(String id) {
+    public GameCreatedDTO(String id) {
         this.id = id;
     }
 
