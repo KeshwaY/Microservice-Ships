@@ -28,7 +28,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
         Collection<String> authoritiesNames = Set.of(
                 "BASIC_USER"
         );
-        initAuthorities(authoritiesNames);
+        initAuthorities(new HashSet<>(authoritiesNames));
         Collection<Authority> authorities = authorityRepository.findAllByNameIn(authoritiesNames);
         createRoleWithAuthoritiesIfNotExist("user", 1, authorities);
     }

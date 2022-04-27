@@ -23,7 +23,7 @@ public class User {
     @NonNull private String email;
 
     @NonNull private String name;
-    @NonNull private String password;
+    private String password;
 
     private LocalDateTime createdDate;
 
