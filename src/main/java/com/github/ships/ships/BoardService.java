@@ -11,21 +11,17 @@ import java.util.stream.IntStream;
 public class BoardService {
 
     private final BoardRepository repository;
-    private final BoardMapper mapper;
 
-    public BoardService(final BoardRepository repository, final BoardMapper mapper) {
+    public BoardService(final BoardRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     BoardGetDTO create(int width, int height, Game game) {
         Map<Integer, Cell> cells = initCells(width, height);
-        Board board = new Board(game.getId(), 1, width, height, cells);
+        Board playerBoard = new Board(game.getId(), 1, width, height, cells);
         Board enemyBoard = new Board(game.getId(), 2, width, height, cells);
-        repository.saveAll(List.of(board, enemyBoard));
-        game.getBoards().add(board);
-        game.getBoards().add(enemyBoard);
-        return null;
+        repository.saveAll(List.of(playerBoard, enemyBoard));
+        return new BoardGetDTO(width, height);
     }
 
     private Map<Integer, Cell> initCells(int width, int height) {

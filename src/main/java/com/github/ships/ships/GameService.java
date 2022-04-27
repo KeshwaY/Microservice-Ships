@@ -23,7 +23,7 @@ class GameService {
         game = repository.save(game);
         game.setBoards(new HashSet<>());
         BoardGetDTO boardGetDTO = boardService.create(gamePostDTO.getWidth(), gamePostDTO.getHeight(), game);
-        return new GameCreatedDTO(game.getId());
+        return mapper.gameToGameCreatedDTO(game, boardGetDTO);
     }
 
 }

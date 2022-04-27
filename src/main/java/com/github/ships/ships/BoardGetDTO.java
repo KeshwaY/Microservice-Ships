@@ -1,23 +1,10 @@
 package com.github.ships.ships;
 
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
 public class BoardGetDTO {
-
-    private int width;
-    private int height;
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(final int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(final int height) {
-        this.height = height;
-    }
+    @NonNull private Integer width;
+    @NonNull private Integer height;
 }

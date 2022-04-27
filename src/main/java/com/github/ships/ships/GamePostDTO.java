@@ -1,8 +1,13 @@
 package com.github.ships.ships;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+@Data
+@AllArgsConstructor
 public class GamePostDTO {
 
     @Min(value = 10)
@@ -12,20 +17,4 @@ public class GamePostDTO {
     @Min(value = 10)
     @Max(value = 20)
     private int width;
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(final int height) {
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(final int width) {
-        this.width = width;
-    }
 }
