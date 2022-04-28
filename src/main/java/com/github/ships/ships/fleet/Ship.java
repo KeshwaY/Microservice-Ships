@@ -22,21 +22,16 @@ public class Ship {
 
     public Ship(List<Integer> cellsIDs) {
         this.masts = initMasts(cellsIDs);
+        this.adjacentCells = initAdjacentCells(cellsIDs);
     }
 
-    private Map<Integer, MastState> initMasts(List<Integer> cellsIDs) {
-        HashMap<Integer, MastState> masts = new HashMap<>();
-        cellsIDs.forEach(cellID -> masts.put(cellID, MastState.ALIVE));
-        return masts;
-    }
-
-    public boolean isAlive() {
+    boolean isAlive() {
         return masts.values()
                     .stream()
                     .anyMatch(mastState -> mastState == MastState.ALIVE);
     }
 
-    public StatusOfLegalShot placeShot(int cellID) {
+    StatusOfLegalShot placeShot(int cellID) {
         if(masts.containsKey(cellID)) {
             changeMastState(cellID);
             if(!isAlive()) return StatusOfLegalShot.SUNK_SHIP;
@@ -49,6 +44,16 @@ public class Ship {
         return masts.containsKey(cellID);
     }
 
+    private Map<Integer, MastState> initMasts(List<Integer> cellsIDs) {
+        HashMap<Integer, MastState> masts = new HashMap<>();
+        cellsIDs.forEach(cellID -> masts.put(cellID, MastState.ALIVE));
+        return masts;
+    }
+
+    private Set<Integer> initAdjacentCells(List<Integer> cellsIDs) {
+        return Set.of();
+    }
+
     private boolean changeMastState(int cellID) {
         if (containsMast(cellID)) {
             masts.put(cellID, MastState.HIT);
@@ -59,5 +64,13 @@ public class Ship {
 
     private boolean containsMast(int cellID) {
         return masts.containsKey(cellID);
+    }
+
+    public Collection<Integer> retrieveMastsCellIDs(int cellId) {
+        return new ArrayList(masts.keySet());
+    }
+
+    Set<Integer> retrieveAdjacentsCellIDs(int cellId) {
+        return new HashSet<>(adjacentCells);
     }
 }
