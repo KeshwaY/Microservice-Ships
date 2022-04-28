@@ -1,6 +1,7 @@
 package com.github.ships.ships.fleet;
 
 import com.github.ships.ships.shot.StatusOfLegalShot;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Document
+@Data
 public class Fleet {
 
     @Id
@@ -17,9 +19,9 @@ public class Fleet {
     private String gameId;
     private Integer playerId;
 
-    private final int boardWidth;
-    private final int boardHeight;
-    private final List<Ship> ships;
+    private int boardWidth;
+    private int boardHeight;
+    private List<Ship> ships;
 
     public Fleet(String gameId, int playerId, int boardWidth, int boardHeight) {
         this.gameId = gameId;

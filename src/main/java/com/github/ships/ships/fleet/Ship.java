@@ -1,21 +1,18 @@
 package com.github.ships.ships.fleet;
 
 import com.github.ships.ships.shot.StatusOfLegalShot;
+import lombok.Data;
 
 import java.util.*;
 
+@Data
 public class Ship {
 
-    private String id;
+    private List<Integer> cellsIDs;
+    private int boardWidth;
+    private int boardHeight;
 
-    private String gameId;
-    private Integer playerId;
-
-    List<Integer> cellsIDs;
-    private final int boardWidth;
-    private final int boardHeight;
-
-    private final Map<Integer, MastState> masts;
+    private Map<Integer, MastState> masts;
     private Set<Integer> adjacentCells;
 
     public Ship(List<Integer> cellsIDs, int boardWidth, int boardHeight) {

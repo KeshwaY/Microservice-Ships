@@ -15,12 +15,9 @@ public class FleetService {
     }
 
     public ShotResult placeShot(ShotResult shotResult, ShotPostDTO shotPostDTO) {
-        // FleetPlaceShotProcedure didn't work.
-        // Tried to replace it with a new one (NewProcedure),
-        // but didn't succeed.
-        NewProcedure newProcedure =
-                new NewProcedure(repository, shotPostDTO, shotResult);
-        return newProcedure.perform();
+        FleetPlaceShotProcedure fleetPlaceShotProcedure =
+                new FleetPlaceShotProcedure(repository, shotPostDTO, shotResult);
+        return fleetPlaceShotProcedure.perform();
     }
 
     public Fleet createAndSaveFleet(int boardWidth, int boardHeight,

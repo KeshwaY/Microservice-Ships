@@ -14,7 +14,7 @@ public class FleetPlaceShotProcedure {
     private final ShotPostDTO shotPostDTO;
     private final ShotResult shotResult;
 
-    EnumMap<StatusOfLegalShot, Runnable> shotStatuses = new EnumMap<>(StatusOfLegalShot.class);
+    private final EnumMap<StatusOfLegalShot, Runnable> shotStatuses;
 
     public FleetPlaceShotProcedure(FleetRepository repository,
                                    ShotPostDTO shotPostDTO,
@@ -22,41 +22,58 @@ public class FleetPlaceShotProcedure {
         this.repository = repository;
         this.shotPostDTO = shotPostDTO;
         this.shotResult = shotResult;
+        shotStatuses = initShotStatuses();
+    }
+
+    private EnumMap<StatusOfLegalShot, Runnable> initShotStatuses() {
+        EnumMap<StatusOfLegalShot, Runnable> shotStatuses = new EnumMap<>(StatusOfLegalShot.class);
         shotStatuses.put(StatusOfLegalShot.HIT_WATER,
-                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_WATER));
+                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_WATER));
         shotStatuses.put(StatusOfLegalShot.HIT_MAST,
-                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_MAST));
+                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_MAST));
         shotStatuses.put(StatusOfLegalShot.SUNK_FLEET,
-                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_FLEET));
+                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_FLEET));
         shotStatuses.put(StatusOfLegalShot.SUNK_SHIP,
-                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP));
+                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP));
+        return shotStatuses;
     }
 
     public ShotResult perform() {
-        List<Fleet> fleets = getFleetByGameAndPlayerIDs();
-        if (fleets.isEmpty()) {
-            throw new NotFoundException();
+        Fleet fleet = getFleetByGameAndPlayerIDs();
+        StatusOfLegalShot statusOfLegalShot = placeShotInFleet(fleet);
+        shotStatuses.get(statusOfLegalShot);
+        if (shotResult.getStatusOfLegalShot() == StatusOfLegalShot.SUNK_SHIP) {
+            defineSunkShipMastsCellIDs(fleet);
+            defineSunkShipAdjacentCellIDs(fleet);
         }
-        Fleet fleet = fleets.get(0);
-        shotStatuses.get(fleet.placeShot(shotPostDTO.getCellIdToPlaceShot()));
-        if (shotResult.getStatusOfLegalShot() == StatusOfLegalShot.HIT_MAST) {
-            retrieveSunkShipMastsCellIDs(fleet);
-            retrieveSunkShipAdjacentCellIDs(fleet);
-        }
+        repository.save(fleet);
         return shotResult;
     }
 
-    private void retrieveSunkShipMastsCellIDs(Fleet fleet) {
-        shotResult.setShipSunk(fleet.retrieveSunkShipMastsCellIDs(shotPostDTO.getCellIdToPlaceShot()));
+    private StatusOfLegalShot placeShotInFleet(Fleet fleet) {
+        int cellIdToPlaceShot = shotPostDTO.getCellIdToPlaceShot();
+        return fleet.placeShot(cellIdToPlaceShot);
     }
 
-    private void retrieveSunkShipAdjacentCellIDs(Fleet fleet) {
-        shotResult.setAdjWaterOfShipSunk(fleet.retrieveSunkShipAdjacentCellIDs(shotPostDTO.getCellIdToPlaceShot()));
+    private void defineSunkShipMastsCellIDs(Fleet fleet) {
+        int cellIdToPlaceShot = shotPostDTO.getCellIdToPlaceShot();
+        List<Integer> shipSunk = fleet.retrieveSunkShipMastsCellIDs(cellIdToPlaceShot);
+        shotResult.setShipSunk(shipSunk);
     }
 
-    private List<Fleet> getFleetByGameAndPlayerIDs() {
+    private void defineSunkShipAdjacentCellIDs(Fleet fleet) {
+        int cellIdToPlaceShot = shotPostDTO.getCellIdToPlaceShot();
+        List<Integer> adjWaterOfShipSunk = fleet.retrieveSunkShipAdjacentCellIDs(cellIdToPlaceShot);
+        shotResult.setAdjWaterOfShipSunk(adjWaterOfShipSunk);
+    }
+
+    private Fleet getFleetByGameAndPlayerIDs() {
         String gameId = shotPostDTO.getGameId();
         int playerId = shotPostDTO.getPlayerId();
-        return repository.getSpecifiedFleets(gameId, playerId);
+        List<Fleet> fleets = repository.getSpecifiedFleets(gameId, playerId);
+        if (fleets.isEmpty()) {
+            throw new NotFoundException();
+        }
+        return fleets.get(0);
     }
 }
