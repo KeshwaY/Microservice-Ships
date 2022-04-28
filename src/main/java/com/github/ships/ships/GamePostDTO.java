@@ -14,9 +14,10 @@ public class GamePostDTO {
     //TODO: with values from the outside of the range
     @Min(value = 10)
     @Max(value = 20)
-    private int height;
+    private int width;
 
     @Min(value = 10)
     @Max(value = 20)
-    private int width;
+    private int height;
+
 }

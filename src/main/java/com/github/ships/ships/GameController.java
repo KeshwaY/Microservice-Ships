@@ -24,6 +24,6 @@ class GameController {
     ResponseEntity<GameCreatedDTO> create(
             @Valid @RequestBody GamePostDTO gamePostDTO
     ) {
-        return ResponseEntity.ok(service.create(gamePostDTO));
+        return ResponseEntity.ok(service.createGame(gamePostDTO));
     }
 }

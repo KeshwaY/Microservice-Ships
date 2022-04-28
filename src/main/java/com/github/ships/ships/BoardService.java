@@ -17,10 +17,12 @@ public class BoardService {
         this.repository = repository;
     }
 
-    public BoardGetDTO create(int width, int height, Game game) {
+    public BoardGetDTO createAndSaveBoards(int width, int height, Game game) {
         Map<Integer, Cell> cells = initCells(width, height);
-        Board playerBoard = new Board(game.getId(), 1, width, height, cells);
-        Board enemyBoard = new Board(game.getId(), 2, width, height, cells);
+        Board playerBoard = new Board(game.getId(), game.getFirstPlayerID(),
+                                      width, height, cells);
+        Board enemyBoard = new Board(game.getId(), game.getSecondPlayerID(),
+                                     width, height, cells);
         repository.saveAll(List.of(playerBoard, enemyBoard));
         return new BoardGetDTO(width, height);
     }

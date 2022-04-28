@@ -5,10 +5,10 @@ import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Document
 public class Fleet {
@@ -16,25 +16,23 @@ public class Fleet {
     @Id
     private String id;
 
-    @NonNull
     private String gameId;
-    @NonNull
     private Integer playerId;
 
-    private final List<Ship> ships;
-    private final List<Integer> sizesOfShipsToBePlaced;
     private final int boardWidth;
     private final int boardHeight;
+    private final List<Ship> ships;
 
-    public Fleet(int playerId, int boardWidth, int boardHeight) {
+    public Fleet(String gameId, int playerId, int boardWidth, int boardHeight) {
+        this.gameId = gameId;
         this.playerId = playerId;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
-        this.sizesOfShipsToBePlaced = generateSizesOfShipsToBePlaced();
         this.ships = placeShipsHardcoded();
     }
 
-    StatusOfLegalShot placeShot(int cellId) {
+    //TODO: refactor
+    public StatusOfLegalShot placeShot(int cellId) {
         AtomicReference<StatusOfLegalShot> atomicShotResult = new AtomicReference<>(StatusOfLegalShot.HIT_WATER);
         ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
                 ifPresent(ship -> atomicShotResult.set(ship.placeShot(cellId)));
@@ -43,35 +41,28 @@ public class Fleet {
         return shotResult;
     }
 
-    List<Integer> retrieveSunkedShipMastsCellIDs(int cellId) {
-        List<Integer> sunkedShipAdjacentCellIDs = new ArrayList<>();
+    //TODO: refactor
+    public List<Integer> retrieveSunkShipMastsCellIDs(int cellId) {
+        List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
         ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
-                ifPresent(s -> sunkedShipAdjacentCellIDs.addAll(s.retrieveMastsCellIDs(cellId)));
-        return sunkedShipAdjacentCellIDs;
+                ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveMastsCellIDs(cellId)));
+        return sunkShipAdjacentCellIDs;
     }
 
-    List<Integer> retrieveSunkedShipAdjacentsCellIDs(int cellId) {
+    //TODO: refactor
+    public List<Integer> retrieveSunkShipAdjacentCellIDs(int cellId) {
         List<Integer> sunkedShipAdjacentCellIDs = new ArrayList<>();
         ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
                 ifPresent(s -> sunkedShipAdjacentCellIDs.addAll(s.retrieveAdjacentsCellIDs(cellId)));
         return sunkedShipAdjacentCellIDs;
     }
-    /* 1x   4-mast
+
+    /* Ships to be placed:
+     * 1x   4-mast
      * 2x   3-mast
      * 3x   2-mast
      * 4x   1-mast */
-    // TODO: Make customizable/read from a file
-
-    private List<Integer> generateSizesOfShipsToBePlaced() {
-        ArrayList<Integer> sizesOfShipsToBePlaced = new ArrayList<>();
-        sizesOfShipsToBePlaced.addAll(List.of(4));
-        sizesOfShipsToBePlaced.addAll(List.of(3, 3));
-        sizesOfShipsToBePlaced.addAll(List.of(2, 2, 2));
-        sizesOfShipsToBePlaced.addAll(List.of(1, 1, 1, 1));
-        return sizesOfShipsToBePlaced;
-    }
-    //TODO to be removed once better implementation is done
-
+    // TODO: replace with randomization
     private List<Ship> placeShipsHardcoded() {
         List<Ship> ships = new ArrayList<>();
         ships.add(new Ship(List.of(22, 32, 42, 52), boardWidth, boardHeight));
@@ -88,22 +79,7 @@ public class Fleet {
     }
 
     private boolean isAlive() {
-        return ships.stream().anyMatch(s -> s.isAlive());
-    }
-
-    private List<Integer> placeShipsRandomly() {
-        //TODO to be corrected and finished
-//        Integer shipSize = sizesOfShipsToBePlaced.get(new Random().nextInt(0, sizesOfShipsToBePlaced.size()));
-        Integer shipSize = 4;
-        HashMap<Integer, List<Integer>> horizontalLegalPositions = new HashMap<>();
-        IntStream.iterate(1, boardField -> boardField + 1).limit(boardWidth * boardHeight).
-                forEach(boardField -> IntStream.iterate(boardField, cell -> cell + 1).limit(boardField + shipSize).
-                        limit(boardWidth * boardHeight).boxed().collect(Collectors.toList()).forEach(System.err::print));
-        return null;
-    }
-
-    private boolean isValidPlacement(int p) {
-        //TODO implement
-        return true;
+        return ships.stream()
+                .anyMatch(Ship::isAlive);
     }
 }

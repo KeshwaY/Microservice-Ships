@@ -1,6 +1,6 @@
 package com.github.ships.ships.fleet;
 
-import com.github.ships.ships.Board;
+import com.github.ships.ships.Game;
 import com.github.ships.ships.shot.ShotPostDTO;
 import com.github.ships.ships.shot.ShotResult;
 import com.github.ships.ships.shot.StatusOfLegalShot;
@@ -15,19 +15,23 @@ public class FleetService {
 
     public FleetService(FleetRepository repository) {
         this.repository = repository;
-        initFleet();
     }
 
     public ShotResult placeShot(ShotResult shotResult, ShotPostDTO shotPostDTO) {
-        FleetPlaceShotPorcedure fleetPlaceShotPorcedure =
-                new FleetPlaceShotPorcedure(repository, shotPostDTO, shotResult);
-        return fleetPlaceShotPorcedure.perform();
+        shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP);
+        shotResult.setShipSunk(List.of(1, 3, 4));
+        shotResult.setAdjWaterOfShipSunk(List.of(6, 2, 4, 9));
+        return shotResult;
+//        FleetPlaceShotPorcedure fleetPlaceShotPorcedure =
+//                new FleetPlaceShotPorcedure(repository, shotPostDTO, shotResult);
+//        return fleetPlaceShotPorcedure.perform();
     }
 
-    private void initFleet() {
-        //TODO get rid of hardcoded board size
-        Fleet playerfleet = new Fleet(1,10, 10);
-        Fleet enemyFleet = new Fleet(2,10, 10);
-        repository.saveAll(List.of(playerfleet, enemyFleet));
+    public void createAndSaveFleets(int boardWidth, int boardHeight, Game game) {
+        Fleet playerFleet = new Fleet(game.getId(), game.getFirstPlayerID(),
+                                      boardWidth, boardHeight);
+        Fleet enemyFleet = new Fleet(game.getId(), game.getSecondPlayerID(),
+                                     boardWidth, boardHeight);
+        repository.saveAll(List.of(playerFleet, enemyFleet));
     }
 }

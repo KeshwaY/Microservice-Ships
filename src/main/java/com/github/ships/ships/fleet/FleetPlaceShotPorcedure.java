@@ -44,11 +44,11 @@ public class FleetPlaceShotPorcedure {
     }
 
     private void retrieveSunkedShipMastsCellIDs(Fleet fleet) {
-        shotResult.setShipSunk(fleet.retrieveSunkedShipMastsCellIDs(shotPostDTO.getCellIdToPlaceShot()));
+        shotResult.setShipSunk(fleet.retrieveSunkShipMastsCellIDs(shotPostDTO.getCellIdToPlaceShot()));
     }
 
     private void retrieveSunkedShipAdjacentsCellIDs(Fleet fleet) {
-        shotResult.setAdjWaterOfShipSunk(fleet.retrieveSunkedShipAdjacentsCellIDs(shotPostDTO.getCellIdToPlaceShot()));
+        shotResult.setAdjWaterOfShipSunk(fleet.retrieveSunkShipAdjacentCellIDs(shotPostDTO.getCellIdToPlaceShot()));
     }
 
     private List<Fleet> getFleetByGameAndPlayerIDs() {

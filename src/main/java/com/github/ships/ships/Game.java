@@ -14,6 +14,9 @@ public class Game {
     @Id
     private String id;
 
+    private final int firstPlayerID = 1;
+    private final int secondPlayerID = 2;
+
     @DocumentReference(lookup = "{'gameId':?#{#self._id} }")
     @NonNull private Collection<Board> boards;
 }
