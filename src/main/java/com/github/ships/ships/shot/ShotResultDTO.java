@@ -8,9 +8,7 @@ import java.util.List;
 public class ShotResultDTO {
 
    private ShotLegality shotLegality;
-
    private StatusOfLegalShot statusOfLegalShot;
-
    private int cellIDofLegalShot;
    private List<Integer> shipSunk;
    private List<Integer> adjWaterOfShipSunk;

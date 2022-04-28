@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ShotLegality {
-    LEGAL, ILLEGAL;
+    LEGAL(new ProcedureAfterDefiningLegalShot()),
+    ILLEGAL(new ProcedureAfterDefiningIllegalShot());
 
     private final static Map<Boolean, ShotLegality> shotsLegality;
+
+    private final ProcedureAfterDefinedShotLegality afterwardsProcedure;
 
     static {
         shotsLegality = new HashMap<>();
@@ -14,7 +17,15 @@ public enum ShotLegality {
         shotsLegality.put(false, ShotLegality.ILLEGAL);
     }
 
+    ShotLegality(ProcedureAfterDefinedShotLegality afterwardsProcedure) {
+        this.afterwardsProcedure = afterwardsProcedure;
+    }
+
     public static ShotLegality obtainShotLegality(boolean isLegal) {
         return shotsLegality.get(isLegal);
+    }
+
+    public ShotResult performAfterwardsProcedure() {
+        return afterwardsProcedure.perform();
     }
 }
