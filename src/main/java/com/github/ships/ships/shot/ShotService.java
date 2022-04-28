@@ -16,7 +16,7 @@ public class ShotService {
 
     public ShotResultDTO placeShot(ShotPostDTO shotPostDTO) {
         ShotLegality shotLegality = placeShotOnBoard(shotPostDTO);
-        ShotResult shotResult = shotLegality.performAfterwardsProcedure();
+        ShotResult shotResult = shotLegality.performAfterwardsProcedure(shotPostDTO, boardService);
         //TODO: START FROM HERE!
         //TODO: [NOW!] PROCEDURE FOR A LEGAL SHOT...
         return mapper.shotResultToShotResultDTO(shotResult);

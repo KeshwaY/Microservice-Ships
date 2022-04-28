@@ -15,24 +15,36 @@ public class ShotResult {
     private ShotLegality shotLegality;
 
     /**
-        Defined if shotLegality == LEGAL
-        Defined by Board if hit cell was water.
-        Defined by Fleet if hit cell was not water.
+     * 1. Defined always if shotLegality == LEGAL
+     * 2. Can be HIT_MAST, HIT_WATER, SUNK_SHIP, SUNK_FLEET
+     * 3. IF hit Cell was WATER_NOT_HIT_ADJACENT || WATER_NOT_HIT_USUAL:
+     *      - defined by Shot as HIT_WATER
+     *    ELSE:
+     *      - defined by Fleet as HIT_MAST || SUNK_SHIP || SUNK_FLEET
      */
     private StatusOfLegalShot statusOfLegalShot;
 
-    /*
-        Defined by Board if shotLegality is legal.
+    /**
+     * 1. Defined always if shotLegality == LEGAL.
+     * 2. Defined by Shot
      */
     private int cellIDofLegalShot;
 
-    /*
-        Defined by Fleet in case of sunk ship.
+    /**
+     * 1. Defined always if:
+     *     - shotLegality == LEGAL.
+     *       &&
+     *     - ship sunk
+     * 2. Defined by Fleet
      */
     private List<Integer> shipSunk;
 
-    /*
-        Defined by Fleet in case of sunk ship.
+    /**
+     * 1. Defined always if:
+     *     - shotLegality == LEGAL.
+     *       &&
+     *     - ship sunk
+     * 2. Defined by Fleet
      */
     private List<Integer> adjWaterOfShipSunk;
 

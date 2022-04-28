@@ -1,5 +1,7 @@
 package com.github.ships.ships.shot;
 
+import com.github.ships.ships.BoardService;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public enum ShotLegality {
         return shotsLegality.get(isLegal);
     }
 
-    public ShotResult performAfterwardsProcedure() {
-        return afterwardsProcedure.perform();
+    public ShotResult performAfterwardsProcedure(ShotPostDTO shotPostDTO, BoardService boardService) {
+        return afterwardsProcedure.perform(shotPostDTO, boardService);
     }
 }

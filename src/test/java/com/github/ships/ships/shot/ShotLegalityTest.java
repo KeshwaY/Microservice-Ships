@@ -14,14 +14,4 @@ public class ShotLegalityTest {
         softAssert.assertEquals(ShotLegality.ILLEGAL, ShotLegality.obtainShotLegality(false));
         softAssert.assertAll();
     }
-
-    @Test
-    public void testPerformAfterwardsProcedure() {
-        SoftAssert softAssert = new SoftAssert();
-        ShotResult shotResultForLegalShot = ShotLegality.LEGAL.performAfterwardsProcedure();
-        ShotResult shotResultForIllegalShot = ShotLegality.ILLEGAL.performAfterwardsProcedure();
-        softAssert.assertEquals(shotResultForLegalShot.getShotLegality(), ShotLegality.LEGAL);
-        softAssert.assertEquals(shotResultForIllegalShot.getShotLegality(), ShotLegality.ILLEGAL);
-        softAssert.assertAll();
-    }
 }
