@@ -17,14 +17,13 @@ public class BoardService {
         this.repository = repository;
     }
 
-    public BoardGetDTO createAndSaveBoards(int width, int height, Game game) {
+    public Board createAndSaveBoard(int width, int height,
+                                    Game game, int playerId) {
         Map<Integer, Cell> cells = initCells(width, height);
-        Board playerBoard = new Board(game.getId(), game.getFirstPlayerID(),
+        Board board = new Board(game.getId(), playerId,
                                       width, height, cells);
-        Board enemyBoard = new Board(game.getId(), game.getSecondPlayerID(),
-                                     width, height, cells);
-        repository.saveAll(List.of(playerBoard, enemyBoard));
-        return new BoardGetDTO(width, height);
+        repository.save(board);
+        return board;
     }
 
     private Map<Integer, Cell> initCells(int width, int height) {
@@ -43,5 +42,4 @@ public class BoardService {
                 new BoardPlaceShotProcedure(repository, shotPostDTO);
         return boardPlaceShotProcedure.perform();
     }
-
 }

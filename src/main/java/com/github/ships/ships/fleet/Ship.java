@@ -41,7 +41,7 @@ public class Ship {
                     .anyMatch(mastState -> mastState == MastState.ALIVE);
     }
 
-    StatusOfLegalShot placeShot(int cellID) {
+    public StatusOfLegalShot placeShot(int cellID) {
         if(masts.containsKey(cellID)) {
             changeMastState(cellID);
             if(!isAlive()) return StatusOfLegalShot.SUNK_SHIP;
@@ -50,15 +50,15 @@ public class Ship {
         return StatusOfLegalShot.HIT_WATER;
     }
 
-    boolean containsCellId(int cellID) {
+    public boolean containsCellId(int cellID) {
         return masts.containsKey(cellID);
     }
 
-    Collection<Integer> retrieveMastsCellIDs(int cellId) {
+    public Collection<Integer> retrieveMastsCellIDs() {
         return new ArrayList(masts.keySet());
     }
 
-    Set<Integer> retrieveAdjacentsCellIDs(int cellId) {
+    public Set<Integer> retrieveAdjacentCellIDs(int cellId) {
         return new HashSet<>(adjacentCells);
     }
 

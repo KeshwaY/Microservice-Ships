@@ -1,14 +1,12 @@
 package com.github.ships.ships.fleet;
 
 import com.github.ships.ships.shot.StatusOfLegalShot;
-import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 @Document
 public class Fleet {
@@ -44,8 +42,9 @@ public class Fleet {
     //TODO: refactor
     public List<Integer> retrieveSunkShipMastsCellIDs(int cellId) {
         List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
-        ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
-                ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveMastsCellIDs(cellId)));
+        ships.stream().filter(s -> s.containsCellId(cellId))
+                      .findFirst()
+                      .ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveMastsCellIDs()));
         return sunkShipAdjacentCellIDs;
     }
 
@@ -53,7 +52,7 @@ public class Fleet {
     public List<Integer> retrieveSunkShipAdjacentCellIDs(int cellId) {
         List<Integer> sunkedShipAdjacentCellIDs = new ArrayList<>();
         ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
-                ifPresent(s -> sunkedShipAdjacentCellIDs.addAll(s.retrieveAdjacentsCellIDs(cellId)));
+                ifPresent(s -> sunkedShipAdjacentCellIDs.addAll(s.retrieveAdjacentCellIDs(cellId)));
         return sunkedShipAdjacentCellIDs;
     }
 
@@ -76,6 +75,12 @@ public class Fleet {
         ships.add(new Ship(List.of(39), boardWidth, boardHeight));
         ships.add(new Ship(List.of(89), boardWidth, boardHeight));
         return ships;
+    }
+
+    public List<Integer> retrieveMastsCellIDs() {
+        List<Integer> allMastsCellIDs = new ArrayList<>();
+        ships.forEach(ship -> allMastsCellIDs.addAll(ship.retrieveMastsCellIDs()));
+        return allMastsCellIDs;
     }
 
     private boolean isAlive() {

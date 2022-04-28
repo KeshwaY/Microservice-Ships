@@ -26,20 +26,29 @@ class GameService {
         Game game = new Game();
         game.setBoards(new HashSet<>());
         game = repository.save(game);
-        BoardGetDTO boardGetDTO = createAndSaveBoards(gamePostDTO, game);
         createAndSaveFleets(gamePostDTO, game);
+        createAndSaveBoards(gamePostDTO, game);
+        BoardGetDTO boardGetDTO = produceBoardGetDTO(gamePostDTO);
         return mapper.gameToGameCreatedDTO(game, boardGetDTO);
     }
 
-    private void createAndSaveFleets(GamePostDTO gamePostDTO, Game game) {
-        int width = gamePostDTO.getWidth();
-        int height = gamePostDTO.getHeight();
-        fleetService.createAndSaveFleets(width, height, game);
+    private BoardGetDTO produceBoardGetDTO(GamePostDTO gamePostDTO) {
+        int boardWidth = gamePostDTO.getWidth();
+        int boardHeight = gamePostDTO.getHeight();
+        return new BoardGetDTO(boardWidth, boardHeight);
     }
 
-    private BoardGetDTO createAndSaveBoards(GamePostDTO gamePostDTO, Game game) {
-        int width = gamePostDTO.getWidth();
-        int height = gamePostDTO.getHeight();
-        return boardService.createAndSaveBoards(width, height, game);
+    private void createAndSaveFleets(GamePostDTO gamePostDTO, Game game) {
+        int boardWidth = gamePostDTO.getWidth();
+        int boardHeight = gamePostDTO.getHeight();
+        fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getFirstPlayerID());
+        fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getSecondPlayerID());
+    }
+
+    private void createAndSaveBoards(GamePostDTO gamePostDTO, Game game) {
+        int boardWidth = gamePostDTO.getWidth();
+        int boardHeight = gamePostDTO.getHeight();
+        boardService.createAndSaveBoard(boardWidth, boardHeight, game, game.getFirstPlayerID());
+        boardService.createAndSaveBoard(boardWidth, boardHeight, game, game.getSecondPlayerID());
     }
 }

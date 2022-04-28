@@ -27,11 +27,10 @@ public class FleetService {
 //        return fleetPlaceShotPorcedure.perform();
     }
 
-    public void createAndSaveFleets(int boardWidth, int boardHeight, Game game) {
-        Fleet playerFleet = new Fleet(game.getId(), game.getFirstPlayerID(),
-                                      boardWidth, boardHeight);
-        Fleet enemyFleet = new Fleet(game.getId(), game.getSecondPlayerID(),
-                                     boardWidth, boardHeight);
-        repository.saveAll(List.of(playerFleet, enemyFleet));
+    public Fleet createAndSaveFleet(int boardWidth, int boardHeight,
+                                    Game game, int playerId) {
+        Fleet fleet = new Fleet(game.getId(), playerId, boardWidth, boardHeight);
+        repository.save(fleet);
+        return fleet;
     }
 }

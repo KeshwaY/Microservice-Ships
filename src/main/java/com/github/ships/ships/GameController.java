@@ -12,16 +12,16 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/api/v1/games")
-class GameController {
+public class GameController {
 
     private final GameService service;
 
-    GameController(final GameService service) {
+    public GameController(final GameService service) {
         this.service = service;
     }
 
     @PostMapping
-    ResponseEntity<GameCreatedDTO> create(
+    public ResponseEntity<GameCreatedDTO> create(
             @Valid @RequestBody GamePostDTO gamePostDTO
     ) {
         return ResponseEntity.ok(service.createGame(gamePostDTO));
