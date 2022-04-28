@@ -28,7 +28,7 @@ public class Fleet {
         this.playerId = playerId;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
-        this.ships = placeShipsHardcoded();
+        this.ships = FleetFactory.produceShips(playerId, boardWidth, boardHeight);
     }
 
     public StatusOfLegalShot placeShot(int cellId) {
@@ -58,27 +58,6 @@ public class Fleet {
                       .findFirst()
                       .ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveAdjacentCellIDs(cellId)));
         return sunkShipAdjacentCellIDs;
-    }
-
-    /* Ships to be placed:
-     * 1x   4-mast
-     * 2x   3-mast
-     * 3x   2-mast
-     * 4x   1-mast */
-    // TODO: replace with randomization
-    private List<Ship> placeShipsHardcoded() {
-        List<Ship> ships = new ArrayList<>();
-        ships.add(new Ship(List.of(22, 32, 42, 52), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(24, 25, 26), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(55, 56, 57), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(10, 20), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(84, 85), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(71, 81), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(1), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(4), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(39), boardWidth, boardHeight));
-        ships.add(new Ship(List.of(89), boardWidth, boardHeight));
-        return ships;
     }
 
     public List<Integer> retrieveMastsCellIDs() {
