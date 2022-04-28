@@ -1,11 +1,10 @@
 package com.github.ships.ships;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,8 +21,17 @@ class GameController {
 
     @PostMapping
     ResponseEntity<GameCreatedDTO> create(
+            @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody GamePostDTO gamePostDTO
     ) {
-        return ResponseEntity.ok(service.create(gamePostDTO));
+        return ResponseEntity.ok(service.create(userDetails.getUsername(), gamePostDTO));
+    }
+
+    @PostMapping("/join/{id}")
+    ResponseEntity<GameCreatedDTO> join(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @PathVariable String id
+    ) {
+        return ResponseEntity.ok(service.join(userDetails.getUsername(), id));
     }
 }

@@ -1,5 +1,6 @@
 package com.github.ships.ships;
 
+import com.github.ships.ships.users.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,4 +17,7 @@ public class Game {
 
     @DocumentReference(lookup = "{'gameId':?#{#self._id} }")
     @NonNull private Collection<Board> boards;
+
+    @DocumentReference
+    @NonNull private Collection<User> players;
 }
