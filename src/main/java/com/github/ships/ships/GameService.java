@@ -1,5 +1,6 @@
 package com.github.ships.ships;
 
+import com.github.ships.ships.fleet.Fleet;
 import com.github.ships.ships.fleet.FleetService;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,8 @@ class GameService {
         Game game = new Game();
         game.setBoards(new HashSet<>());
         game = repository.save(game);
-        createAndSaveFleets(gamePostDTO, game);
         createAndSaveBoards(gamePostDTO, game);
+        createAndSaveFleets(gamePostDTO, game);
         BoardGetDTO boardGetDTO = produceBoardGetDTO(gamePostDTO);
         return mapper.gameToGameCreatedDTO(game, boardGetDTO);
     }
@@ -38,17 +39,19 @@ class GameService {
         return new BoardGetDTO(boardWidth, boardHeight);
     }
 
-    private void createAndSaveFleets(GamePostDTO gamePostDTO, Game game) {
-        int boardWidth = gamePostDTO.getWidth();
-        int boardHeight = gamePostDTO.getHeight();
-        fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getFirstPlayerID());
-        fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getSecondPlayerID());
-    }
-
     private void createAndSaveBoards(GamePostDTO gamePostDTO, Game game) {
         int boardWidth = gamePostDTO.getWidth();
         int boardHeight = gamePostDTO.getHeight();
         boardService.createAndSaveBoard(boardWidth, boardHeight, game, game.getFirstPlayerID());
         boardService.createAndSaveBoard(boardWidth, boardHeight, game, game.getSecondPlayerID());
+    }
+
+    private void createAndSaveFleets(GamePostDTO gamePostDTO, Game game) {
+        int boardWidth = gamePostDTO.getWidth();
+        int boardHeight = gamePostDTO.getHeight();
+        Fleet fleet = fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getFirstPlayerID());
+        boardService.initiateFleet(fleet, game.getId(), game.getFirstPlayerID());
+        fleet = fleetService.createAndSaveFleet(boardWidth, boardHeight, game, game.getSecondPlayerID());
+        boardService.initiateFleet(fleet, game.getId(), game.getSecondPlayerID());
     }
 }
