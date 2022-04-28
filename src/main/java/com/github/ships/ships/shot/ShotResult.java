@@ -15,20 +15,17 @@ public class ShotResult {
     private ShotLegality shotLegality;
 
     /**
-     * 1. Defined always if shotLegality == LEGAL
-     * 2. Can be HIT_MAST, HIT_WATER, SUNK_SHIP, SUNK_FLEET
-     * 3. IF hit Cell was WATER_NOT_HIT_ADJACENT || WATER_NOT_HIT_USUAL:
-     *      - defined by Shot as HIT_WATER
-     *    ELSE:
-     *      - defined by Fleet as HIT_MAST || SUNK_SHIP || SUNK_FLEET
-     */
-    private StatusOfLegalShot statusOfLegalShot;
-
-    /**
      * 1. Defined always if shotLegality == LEGAL.
      * 2. Defined by Shot
      */
     private int cellIDofLegalShot;
+
+    /**
+     * 1. Defined always if shotLegality == LEGAL
+     * 2. Can be HIT_MAST, HIT_WATER, SUNK_SHIP, SUNK_FLEET
+     * 3. Defined by Fleet
+     */
+    private StatusOfLegalShot statusOfLegalShot;
 
     /**
      * 1. Defined always if:
@@ -47,5 +44,4 @@ public class ShotResult {
      * 2. Defined by Fleet
      */
     private List<Integer> adjWaterOfShipSunk;
-
 }
