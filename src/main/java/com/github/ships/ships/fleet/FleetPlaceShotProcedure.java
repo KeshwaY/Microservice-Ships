@@ -14,34 +14,18 @@ public class FleetPlaceShotProcedure {
     private final ShotPostDTO shotPostDTO;
     private final ShotResult shotResult;
 
-    private final EnumMap<StatusOfLegalShot, Runnable> shotStatuses;
-
     public FleetPlaceShotProcedure(FleetRepository repository,
                                    ShotPostDTO shotPostDTO,
                                    ShotResult shotResult) {
         this.repository = repository;
         this.shotPostDTO = shotPostDTO;
         this.shotResult = shotResult;
-        shotStatuses = initShotStatuses();
-    }
-
-    private EnumMap<StatusOfLegalShot, Runnable> initShotStatuses() {
-        EnumMap<StatusOfLegalShot, Runnable> shotStatuses = new EnumMap<>(StatusOfLegalShot.class);
-        shotStatuses.put(StatusOfLegalShot.HIT_WATER,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_WATER));
-        shotStatuses.put(StatusOfLegalShot.HIT_MAST,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_MAST));
-        shotStatuses.put(StatusOfLegalShot.SUNK_FLEET,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_FLEET));
-        shotStatuses.put(StatusOfLegalShot.SUNK_SHIP,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP));
-        return shotStatuses;
     }
 
     public ShotResult perform() {
         Fleet fleet = getFleetByGameAndPlayerIDs();
         StatusOfLegalShot statusOfLegalShot = placeShotInFleet(fleet);
-        shotStatuses.get(statusOfLegalShot);
+        shotResult.setStatusOfLegalShot(statusOfLegalShot);
         if (shotResult.getStatusOfLegalShot() == StatusOfLegalShot.SUNK_SHIP) {
             defineSunkShipMastsCellIDs(fleet);
             defineSunkShipAdjacentCellIDs(fleet);

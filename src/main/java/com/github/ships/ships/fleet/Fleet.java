@@ -44,7 +44,6 @@ public class Fleet {
         return shotResult;
     }
 
-    //TODO: refactor
     public List<Integer> retrieveSunkShipMastsCellIDs(int cellId) {
         List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
         ships.stream().filter(s -> s.containsCellId(cellId))
@@ -53,7 +52,6 @@ public class Fleet {
         return sunkShipAdjacentCellIDs;
     }
 
-    //TODO: refactor
     public List<Integer> retrieveSunkShipAdjacentCellIDs(int cellId) {
         List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
         ships.stream().filter(s -> s.containsCellId(cellId))
