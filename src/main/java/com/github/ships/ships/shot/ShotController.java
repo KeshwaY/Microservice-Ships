@@ -1,5 +1,6 @@
 package com.github.ships.ships.shot;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,10 @@ public class ShotController {
            @RequestBody
            ShotPostDTO shotPostDTO) {
       ShotResultDTO shotResultDTO = service.placeShot(shotPostDTO);
-      return ResponseEntity.ok(shotResultDTO);
+      if (shotResultDTO.getShotLegality() == ShotLegality.ILLEGAL) {
+         return new ResponseEntity<>(shotResultDTO, HttpStatus.BAD_REQUEST);
+      } else {
+         return ResponseEntity.ok(shotResultDTO);
+      }
    }
 }

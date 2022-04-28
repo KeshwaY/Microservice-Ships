@@ -1,5 +1,6 @@
 package com.github.ships.ships.shot;
 
+import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.fleet.FleetService;
 
 public class ProcedureAfterDefiningIllegalShot implements ProcedureAfterDefinedShotLegality {

@@ -8,7 +8,7 @@ import com.github.ships.ships.shot.StatusOfLegalShot;
 import java.util.EnumMap;
 import java.util.List;
 
-public class FleetPlaceShotPorcedure {
+public class FleetPlaceShotProcedure {
 
     private final FleetRepository repository;
     private final ShotPostDTO shotPostDTO;
@@ -16,7 +16,7 @@ public class FleetPlaceShotPorcedure {
 
     EnumMap<StatusOfLegalShot, Runnable> shotStatuses = new EnumMap<>(StatusOfLegalShot.class);
 
-    public FleetPlaceShotPorcedure(FleetRepository repository, ShotPostDTO shotPostDTO, ShotResult shotResult) {
+    public FleetPlaceShotProcedure(FleetRepository repository, ShotPostDTO shotPostDTO, ShotResult shotResult) {
         this.repository = repository;
         this.shotPostDTO = shotPostDTO;
         this.shotResult = shotResult;
