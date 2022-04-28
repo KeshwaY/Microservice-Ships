@@ -39,12 +39,16 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(getCustomAccessDeniedHandler())
                 .and()
                 .authorizeRequests()
+                .mvcMatchers("/send-message").hasAnyAuthority("BASIC_USER")
                 .mvcMatchers("/api/v1/games/**").hasAnyAuthority("BASIC_USER")
                 .mvcMatchers("/api/v1/shoot/**").hasAnyAuthority("BASIC_USER")
+                .mvcMatchers("/").hasAnyAuthority("BASIC_USER")
                 .mvcMatchers("/**").permitAll()
                 .and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .formLogin();
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
