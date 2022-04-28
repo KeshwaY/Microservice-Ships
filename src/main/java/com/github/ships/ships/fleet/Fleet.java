@@ -29,7 +29,6 @@ public class Fleet {
         this.ships = placeShipsHardcoded();
     }
 
-    //TODO: refactor
     public StatusOfLegalShot placeShot(int cellId) {
         AtomicReference<StatusOfLegalShot> atomicShotResult = new AtomicReference<>(StatusOfLegalShot.HIT_WATER);
         ships.stream()

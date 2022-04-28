@@ -1,22 +1,17 @@
 package com.github.ships.ships.fleet;
 
 import com.github.ships.ships.shot.StatusOfLegalShot;
-import lombok.NonNull;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
 
-@Document
 public class Ship {
 
-    @Id
     private String id;
 
-    @NonNull
     private String gameId;
-    @NonNull private Integer playerId;
+    private Integer playerId;
 
+    List<Integer> cellsIDs;
     private final int boardWidth;
     private final int boardHeight;
 
@@ -24,14 +19,15 @@ public class Ship {
     private Set<Integer> adjacentCells;
 
     public Ship(List<Integer> cellsIDs, int boardWidth, int boardHeight) {
+        this.cellsIDs = cellsIDs;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.masts = initMasts(cellsIDs);
         this.adjacentCells = new HashSet<>();
-        initiateAdjacentCels();
+        initiateAdjacentCells();
     }
 
-    private void initiateAdjacentCels() {
+    private void initiateAdjacentCells() {
         masts.keySet().forEach(i -> addOccupiedFields(i));
     }
 
