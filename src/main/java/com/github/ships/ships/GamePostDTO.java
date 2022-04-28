@@ -10,6 +10,8 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class GamePostDTO {
 
+    //TODO: it doesn't prevent from creating the game
+    //TODO: with values from the outside of the range
     @Min(value = 10)
     @Max(value = 20)
     private int height;

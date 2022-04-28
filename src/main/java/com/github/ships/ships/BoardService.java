@@ -1,5 +1,6 @@
 package com.github.ships.ships;
 
+import com.github.ships.ships.shot.ShotPostDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +13,11 @@ public class BoardService {
 
     private final BoardRepository repository;
 
-    public BoardService(final BoardRepository repository) {
+    public BoardService(BoardRepository repository) {
         this.repository = repository;
     }
 
-    BoardGetDTO create(int width, int height, Game game) {
+    public BoardGetDTO create(int width, int height, Game game) {
         Map<Integer, Cell> cells = initCells(width, height);
         Board playerBoard = new Board(game.getId(), 1, width, height, cells);
         Board enemyBoard = new Board(game.getId(), 2, width, height, cells);
@@ -25,10 +26,20 @@ public class BoardService {
     }
 
     private Map<Integer, Cell> initCells(int width, int height) {
-        final TreeMap<Integer, Cell> result = new TreeMap<>();
+        TreeMap<Integer, Cell> result = new TreeMap<>();
         IntStream.rangeClosed(1, width * height).forEach(i ->
-                result.put(i , Cell.WATER));
+                result.put(i , Cell.WATER_NOT_HIT_USUAL));
         return result;
+    }
+
+    /**
+     * @return true if shot is legal and was placed
+     *         false if not legal and was not placed
+     */
+    public boolean placeShot(ShotPostDTO shotPostDTO) {
+        BoardPlaceShotProcedure boardPlaceShotProcedure =
+                new BoardPlaceShotProcedure(repository, shotPostDTO);
+        return boardPlaceShotProcedure.perform();
     }
 
 }

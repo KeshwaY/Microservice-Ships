@@ -5,12 +5,10 @@ import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.ResourceAlreadyExistsException;
 import com.github.ships.ships.abstraction.GenericCRUDService;
 import com.github.ships.ships.security.authorities.Authority;
-import com.github.ships.ships.security.authorities.AuthorityDTO;
 import com.github.ships.ships.security.authorities.AuthorityRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 public class RoleService implements GenericCRUDService<RoleDTO, RoleDTO, RoleDTO, GenericResponseDto> {

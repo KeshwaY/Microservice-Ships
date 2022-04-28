@@ -19,4 +19,5 @@ public class Board {
     @NonNull private Integer width;
     @NonNull private Integer height;
     @NonNull private Map<Integer, Cell> cells;
+
 }
