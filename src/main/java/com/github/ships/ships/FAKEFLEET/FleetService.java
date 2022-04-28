@@ -3,11 +3,11 @@ package com.github.ships.ships.FAKEFLEET;
 import com.github.ships.ships.shot.ShotPostDTO;
 import com.github.ships.ships.shot.ShotResult;
 import com.github.ships.ships.shot.StatusOfLegalShot;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class FleetService {
 
     public ShotResult placeShot(ShotResult shotResult, ShotPostDTO shotPostDTO) {

@@ -1,21 +1,15 @@
 package com.github.ships.ships.shot;
 
 import com.github.ships.ships.FAKEFLEET.FleetService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ProcedureAfterDefiningLegalShot implements ProcedureAfterDefinedShotLegality {
 
-    @Autowired
-    private FleetService fleetService;
-
     @Override
-    public ShotResult perform(ShotPostDTO shotPostDTO) {
+    public ShotResult perform(ShotPostDTO shotPostDTO, FleetService fleetService) {
         ShotResult shotResult = new ShotResult();
         shotResult = defineShotLegality(shotResult);
         shotResult = defineCellIDofLegalShot(shotResult, shotPostDTO);
-        shotResult = defineShotResultByFleet(shotResult, shotPostDTO);
+        shotResult = defineShotResultByFleet(shotResult, shotPostDTO, fleetService);
         return shotResult;
     }
 
@@ -30,7 +24,9 @@ public class ProcedureAfterDefiningLegalShot implements ProcedureAfterDefinedSho
         return shotResult;
     }
 
-    private ShotResult defineShotResultByFleet(ShotResult shotResult, ShotPostDTO shotPostDTO) {
+    private ShotResult defineShotResultByFleet(ShotResult shotResult,
+                                               ShotPostDTO shotPostDTO,
+                                               FleetService fleetService) {
         return fleetService.placeShot(shotResult, shotPostDTO);
     }
 }
