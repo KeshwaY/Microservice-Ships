@@ -5,7 +5,6 @@ import com.github.ships.ships.shot.ShotPostDTO;
 import com.github.ships.ships.shot.ShotResult;
 import com.github.ships.ships.shot.StatusOfLegalShot;
 
-import java.util.EnumMap;
 import java.util.List;
 
 public class FleetPlaceShotProcedure {

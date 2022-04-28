@@ -78,6 +78,7 @@ public class Ship {
         addTopAndBottomFields(cellID);
         addLeftFields(cellID);
         addRightFields(cellID);
+        adjacentCells.removeAll(cellsIDs);
     }
 
     private void addTopAndBottomFields(int cellID) {
