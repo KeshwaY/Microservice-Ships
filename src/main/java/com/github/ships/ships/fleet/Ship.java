@@ -1,5 +1,6 @@
 package com.github.ships.ships.fleet;
 
+import com.github.ships.ships.shot.StatusOfLegalShot;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -35,16 +36,20 @@ public class Ship {
                     .anyMatch(mastState -> mastState == MastState.ALIVE);
     }
 
-    public List<Collection<Integer>> placeShot(int cellID) {
+    public StatusOfLegalShot placeShot(int cellID) {
         if(masts.containsKey(cellID)) {
             changeMastState(cellID);
-            if(!isAlive()) return List.of(adjacentCells);
-            return List.of(List.of(cellID));
+            if(!isAlive()) return StatusOfLegalShot.SUNK_SHIP;
+            return StatusOfLegalShot.HIT_MAST;
         }
-        return List.of();
+        return StatusOfLegalShot.HIT_WATER;
     }
 
-    public boolean changeMastState(int cellID) {
+    boolean containsCellId(int cellID) {
+        return masts.containsKey(cellID);
+    }
+
+    private boolean changeMastState(int cellID) {
         if (containsMast(cellID)) {
             masts.put(cellID, MastState.HIT);
             return true;

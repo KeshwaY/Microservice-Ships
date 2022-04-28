@@ -1,11 +1,12 @@
 package com.github.ships.ships.fleet;
 
+import com.github.ships.ships.shot.StatusOfLegalShot;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -17,7 +18,8 @@ public class Fleet {
 
     @NonNull
     private String gameId;
-    @NonNull private Integer playerId;
+    @NonNull
+    private Integer playerId;
 
     private final List<Ship> ships;
     private final List<Integer> sizesOfShipsToBePlaced;
@@ -32,13 +34,13 @@ public class Fleet {
         placeShipsHardcoded();
     }
 
-    public List<Collection<Integer>> placeShot(int cellId) {
-        List<Collection<Integer>> shotResult = new ArrayList<>();
-        ships.forEach(s -> {
-            if(!s.placeShot(cellId).get(0).isEmpty()) shotResult.addAll(s.placeShot(cellId));
-        });
-
-        return null;
+    public StatusOfLegalShot placeShot(int cellId) {
+        AtomicReference<StatusOfLegalShot> atomicShotResult = new AtomicReference<>(StatusOfLegalShot.HIT_WATER);
+        ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
+                ifPresent(ship -> atomicShotResult.set(ship.placeShot(cellId)));
+        StatusOfLegalShot shotResult = atomicShotResult.get();
+        if(shotResult == StatusOfLegalShot.SUNK_SHIP && !isAlive()) shotResult = StatusOfLegalShot.SUNK_FLEET;
+        return shotResult;
     }
 
     /* 1x   4-mast
@@ -67,6 +69,10 @@ public class Fleet {
         ships.add(new Ship(List.of(4)));
         ships.add(new Ship(List.of(39)));
         ships.add(new Ship(List.of(89)));
+    }
+
+    private boolean isAlive() {
+        return ships.stream().anyMatch(s -> s.isAlive());
     }
 
     private List<Integer> placeShipsRandomly() {

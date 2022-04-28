@@ -22,6 +22,7 @@ class FleetPlaceShotPorcedure {
         if(fleets.isEmpty()) {
             throw new RuntimeException();
         }
+        Fleet fleet = fleets.get(0);
 
 
 
