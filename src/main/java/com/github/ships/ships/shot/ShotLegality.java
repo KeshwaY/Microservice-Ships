@@ -1,6 +1,6 @@
 package com.github.ships.ships.shot;
 
-import com.github.ships.ships.FAKEFLEET.FleetService;
+import com.github.ships.ships.fleet.FleetService;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class FleetService {
 
     public ShotResult placeShot(ShotResult shotResult, ShotPostDTO shotPostDTO) {

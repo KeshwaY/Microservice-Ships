@@ -1,7 +1,7 @@
 package com.github.ships.ships.shot;
 
 import com.github.ships.ships.BoardService;
-import com.github.ships.ships.FAKEFLEET.FleetService;
+import com.github.ships.ships.fleet.FleetService;
 import org.springframework.stereotype.Service;
 
 @Service
