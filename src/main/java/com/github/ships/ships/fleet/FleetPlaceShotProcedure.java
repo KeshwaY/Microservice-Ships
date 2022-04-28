@@ -16,17 +16,20 @@ public class FleetPlaceShotProcedure {
 
     EnumMap<StatusOfLegalShot, Runnable> shotStatuses = new EnumMap<>(StatusOfLegalShot.class);
 
-    public FleetPlaceShotProcedure(FleetRepository repository, ShotPostDTO shotPostDTO, ShotResult shotResult) {
+    public FleetPlaceShotProcedure(FleetRepository repository,
+                                   ShotPostDTO shotPostDTO,
+                                   ShotResult shotResult) {
         this.repository = repository;
         this.shotPostDTO = shotPostDTO;
         this.shotResult = shotResult;
         shotStatuses.put(StatusOfLegalShot.HIT_WATER,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_WATER));
-        shotStatuses.put(StatusOfLegalShot.HIT_MAST, () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_MAST));
+                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_WATER));
+        shotStatuses.put(StatusOfLegalShot.HIT_MAST,
+                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.HIT_MAST));
         shotStatuses.put(StatusOfLegalShot.SUNK_FLEET,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_FLEET));
+                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_FLEET));
         shotStatuses.put(StatusOfLegalShot.SUNK_SHIP,
-                () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP));
+                         () -> shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP));
     }
 
     public ShotResult perform() {
@@ -37,17 +40,17 @@ public class FleetPlaceShotProcedure {
         Fleet fleet = fleets.get(0);
         shotStatuses.get(fleet.placeShot(shotPostDTO.getCellIdToPlaceShot()));
         if (shotResult.getStatusOfLegalShot() == StatusOfLegalShot.HIT_MAST) {
-            retrieveSunkedShipMastsCellIDs(fleet);
-            retrieveSunkedShipAdjacentsCellIDs(fleet);
+            retrieveSunkShipMastsCellIDs(fleet);
+            retrieveSunkShipAdjacentCellIDs(fleet);
         }
         return shotResult;
     }
 
-    private void retrieveSunkedShipMastsCellIDs(Fleet fleet) {
+    private void retrieveSunkShipMastsCellIDs(Fleet fleet) {
         shotResult.setShipSunk(fleet.retrieveSunkShipMastsCellIDs(shotPostDTO.getCellIdToPlaceShot()));
     }
 
-    private void retrieveSunkedShipAdjacentsCellIDs(Fleet fleet) {
+    private void retrieveSunkShipAdjacentCellIDs(Fleet fleet) {
         shotResult.setAdjWaterOfShipSunk(fleet.retrieveSunkShipAdjacentCellIDs(shotPostDTO.getCellIdToPlaceShot()));
     }
 

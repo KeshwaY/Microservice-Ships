@@ -32,10 +32,14 @@ public class Fleet {
     //TODO: refactor
     public StatusOfLegalShot placeShot(int cellId) {
         AtomicReference<StatusOfLegalShot> atomicShotResult = new AtomicReference<>(StatusOfLegalShot.HIT_WATER);
-        ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
-                ifPresent(ship -> atomicShotResult.set(ship.placeShot(cellId)));
+        ships.stream()
+             .filter(ship -> ship.containsCellId(cellId))
+             .findFirst()
+             .ifPresent(ship -> atomicShotResult.set(ship.placeShot(cellId)));
         StatusOfLegalShot shotResult = atomicShotResult.get();
-        if (shotResult == StatusOfLegalShot.SUNK_SHIP && !isAlive()) shotResult = StatusOfLegalShot.SUNK_FLEET;
+        if (shotResult == StatusOfLegalShot.SUNK_SHIP && !isAlive()) {
+            shotResult = StatusOfLegalShot.SUNK_FLEET;
+        }
         return shotResult;
     }
 
@@ -50,10 +54,11 @@ public class Fleet {
 
     //TODO: refactor
     public List<Integer> retrieveSunkShipAdjacentCellIDs(int cellId) {
-        List<Integer> sunkedShipAdjacentCellIDs = new ArrayList<>();
-        ships.stream().filter(s -> s.containsCellId(cellId)).findFirst().
-                ifPresent(s -> sunkedShipAdjacentCellIDs.addAll(s.retrieveAdjacentCellIDs(cellId)));
-        return sunkedShipAdjacentCellIDs;
+        List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
+        ships.stream().filter(s -> s.containsCellId(cellId))
+                      .findFirst()
+                      .ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveAdjacentCellIDs(cellId)));
+        return sunkShipAdjacentCellIDs;
     }
 
     /* Ships to be placed:
@@ -85,6 +90,6 @@ public class Fleet {
 
     private boolean isAlive() {
         return ships.stream()
-                .anyMatch(Ship::isAlive);
+                    .anyMatch(Ship::isAlive);
     }
 }

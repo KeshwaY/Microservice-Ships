@@ -18,13 +18,9 @@ public class FleetService {
     }
 
     public ShotResult placeShot(ShotResult shotResult, ShotPostDTO shotPostDTO) {
-        shotResult.setStatusOfLegalShot(StatusOfLegalShot.SUNK_SHIP);
-        shotResult.setShipSunk(List.of(1, 3, 4));
-        shotResult.setAdjWaterOfShipSunk(List.of(6, 2, 4, 9));
-        return shotResult;
-//        FleetPlaceShotPorcedure fleetPlaceShotPorcedure =
-//                new FleetPlaceShotPorcedure(repository, shotPostDTO, shotResult);
-//        return fleetPlaceShotPorcedure.perform();
+        FleetPlaceShotProcedure fleetPlaceShotProcedure =
+                                new FleetPlaceShotProcedure(repository, shotPostDTO, shotResult);
+        return fleetPlaceShotProcedure.perform();
     }
 
     public Fleet createAndSaveFleet(int boardWidth, int boardHeight,
