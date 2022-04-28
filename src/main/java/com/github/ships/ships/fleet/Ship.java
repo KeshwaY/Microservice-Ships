@@ -1,12 +1,23 @@
 package com.github.ships.ships.fleet;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.NonNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.*;
+
+@Document
 public class Ship {
 
+    @Id
+    private String id;
+
+    @NonNull
+    private String gameId;
+    @NonNull private Integer playerId;
+
     private final Map<Integer, MastState> masts;
+    private Set<Integer> adjacentCells;
 
     public Ship(List<Integer> cellsIDs) {
         this.masts = initMasts(cellsIDs);
@@ -24,7 +35,16 @@ public class Ship {
                     .anyMatch(mastState -> mastState == MastState.ALIVE);
     }
 
-    public boolean placeShot(int cellID) {
+    public List<Collection<Integer>> placeShot(int cellID) {
+        if(masts.containsKey(cellID)) {
+            changeMastState(cellID);
+            if(!isAlive()) return List.of(adjacentCells);
+            return List.of(List.of(cellID));
+        }
+        return List.of();
+    }
+
+    public boolean changeMastState(int cellID) {
         if (containsMast(cellID)) {
             masts.put(cellID, MastState.HIT);
             return true;
