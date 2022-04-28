@@ -17,10 +17,15 @@ public class Ship {
     private String gameId;
     @NonNull private Integer playerId;
 
+    private final int boardWidth;
+    private final int boardHeight;
+
     private final Map<Integer, MastState> masts;
     private Set<Integer> adjacentCells;
 
-    public Ship(List<Integer> cellsIDs) {
+    public Ship(List<Integer> cellsIDs, int boardWidth, int boardHeight) {
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.masts = initMasts(cellsIDs);
         this.adjacentCells = initAdjacentCells(cellsIDs);
     }
@@ -42,6 +47,14 @@ public class Ship {
 
     boolean containsCellId(int cellID) {
         return masts.containsKey(cellID);
+    }
+
+    Collection<Integer> retrieveMastsCellIDs(int cellId) {
+        return new ArrayList(masts.keySet());
+    }
+
+    Set<Integer> retrieveAdjacentsCellIDs(int cellId) {
+        return new HashSet<>(adjacentCells);
     }
 
     private Map<Integer, MastState> initMasts(List<Integer> cellsIDs) {
@@ -66,11 +79,47 @@ public class Ship {
         return masts.containsKey(cellID);
     }
 
-    public Collection<Integer> retrieveMastsCellIDs(int cellId) {
-        return new ArrayList(masts.keySet());
+    private void addOccupiedFields(int cellID) {
+        adjacentCells.add(cellID);
+        addTopAndBottomFields(cellID);
+        addLeftFields(cellID);
+        addRightFields(cellID);
     }
 
-    Set<Integer> retrieveAdjacentsCellIDs(int cellId) {
-        return new HashSet<>(adjacentCells);
+    private void addTopAndBottomFields(int cellID) {
+        addCellIdIfInRange(cellID - boardWidth);
+        addCellIdIfInRange(cellID + boardWidth);
+    }
+
+    private void addLeftFields(int cellID) {
+        if (!isCellOnLeftEdge(cellID)) {
+            addCellIdIfInRange(cellID - 1);
+            addCellIdIfInRange(cellID - boardWidth - 1);
+            addCellIdIfInRange(cellID + boardWidth - 1);
+        }
+    }
+
+    private boolean isCellOnLeftEdge(int cellID) {
+        return (cellID - 1) % boardWidth == 0;
+    }
+
+    private void addRightFields(int cellID) {
+        if (!isCellOnRightEdge(cellID)) {
+            addCellIdIfInRange(cellID + 1);
+            addCellIdIfInRange(cellID - boardWidth + 1);
+            addCellIdIfInRange(cellID + boardWidth + 1);
+        }
+    }
+
+    private boolean isCellOnRightEdge(int cellID) {
+        return cellID % boardWidth == 0;
+    }
+
+    private void addCellIdIfInRange(int cellID) {
+        if (isInBoardRange(cellID)) adjacentCells.add(cellID);
+    }
+
+    private boolean isInBoardRange(int cellID) {
+        return cellID > 0 && cellID <= boardWidth * boardHeight;
     }
 }

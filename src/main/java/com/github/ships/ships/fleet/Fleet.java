@@ -73,16 +73,16 @@ public class Fleet {
     //TODO to be removed once better implementation is done
 
     private void placeShipsHardcoded() {
-        ships.add(new Ship(List.of(22, 32, 42, 52)));
-        ships.add(new Ship(List.of(24, 25, 26)));
-        ships.add(new Ship(List.of(55, 56, 57)));
-        ships.add(new Ship(List.of(10, 20)));
-        ships.add(new Ship(List.of(84, 85)));
-        ships.add(new Ship(List.of(71, 81)));
-        ships.add(new Ship(List.of(1)));
-        ships.add(new Ship(List.of(4)));
-        ships.add(new Ship(List.of(39)));
-        ships.add(new Ship(List.of(89)));
+        ships.add(new Ship(List.of(22, 32, 42, 52), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(24, 25, 26), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(55, 56, 57), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(10, 20), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(84, 85), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(71, 81), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(1), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(4), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(39), boardWidth, boardHeight));
+        ships.add(new Ship(List.of(89), boardWidth, boardHeight));
     }
 
     private boolean isAlive() {
@@ -103,50 +103,5 @@ public class Fleet {
     private boolean isValidPlacement(int p) {
         //TODO implement
         return true;
-    }
-
-    private List<Integer> addOccupiedFields(int cellID, List<Integer> occupiedFields) {
-        occupiedFields.add(cellID);
-        addTopAndBottomFields(cellID, occupiedFields);
-        addLeftFields(cellID, occupiedFields);
-        addRightFields(cellID, occupiedFields);
-        return occupiedFields;
-    }
-
-    private void addTopAndBottomFields(int cellID, List<Integer> occupiedFields) {
-        addCellIdIfInRange(cellID - boardWidth, occupiedFields);
-        addCellIdIfInRange(cellID + boardWidth, occupiedFields);
-    }
-
-    private void addLeftFields(int cellID, List<Integer> occupiedFields) {
-        if (!isCellOnLeftEdge(cellID)) {
-            addCellIdIfInRange(cellID - 1, occupiedFields);
-            addCellIdIfInRange(cellID - boardWidth - 1, occupiedFields);
-            addCellIdIfInRange(cellID + boardWidth - 1, occupiedFields);
-        }
-    }
-
-    private boolean isCellOnLeftEdge(int cellID) {
-        return (cellID - 1) % boardWidth == 0;
-    }
-
-    private void addRightFields(int cellID, List<Integer> occupiedFields) {
-        if (!isCellOnRightEdge(cellID)) {
-            addCellIdIfInRange(cellID + 1, occupiedFields);
-            addCellIdIfInRange(cellID - boardWidth + 1, occupiedFields);
-            addCellIdIfInRange(cellID + boardWidth + 1, occupiedFields);
-        }
-    }
-
-    private boolean isCellOnRightEdge(int cellID) {
-        return cellID % boardWidth == 0;
-    }
-
-    private void addCellIdIfInRange(int cellID, List<Integer> occupiedFields) {
-        if (isInBoardRange(cellID)) occupiedFields.add(cellID);
-    }
-
-    private boolean isInBoardRange(int cellID) {
-        return cellID > 0 && cellID <= boardWidth * boardHeight;
     }
 }

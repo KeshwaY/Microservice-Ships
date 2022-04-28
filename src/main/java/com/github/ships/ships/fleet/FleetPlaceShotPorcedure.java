@@ -1,5 +1,6 @@
 package com.github.ships.ships.fleet;
 
+import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.shot.ShotPostDTO;
 import com.github.ships.ships.shot.ShotResult;
 import com.github.ships.ships.shot.StatusOfLegalShot;
@@ -31,7 +32,7 @@ class FleetPlaceShotPorcedure {
     public ShotResult perform() {
         List<Fleet> fleets = getFleetByGameAndPlayerIDs();
         if (fleets.isEmpty()) {
-            throw new RuntimeException();
+            throw new NotFoundException();
         }
         Fleet fleet = fleets.get(0);
         shotStatuses.get(fleet.placeShot(shotPostDTO.getCellIdToPlaceShot()));
