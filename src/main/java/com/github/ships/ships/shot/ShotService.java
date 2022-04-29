@@ -2,6 +2,7 @@ package com.github.ships.ships.shot;
 
 import com.github.ships.ships.InvalidShotException;
 import com.github.ships.ships.NotFoundException;
+import com.github.ships.ships.NotUserTurnException;
 import com.github.ships.ships.ShotResult;
 import com.github.ships.ships.board.Board;
 import com.github.ships.ships.board.BoardRepository;
@@ -42,9 +43,12 @@ public class ShotService {
         User player = userService.getRawUser(email);
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         if (!game.containsUser(player)) throw new NotFoundException();
+        if (!game.isUserTurn(player)) throw new NotUserTurnException();
         int cellIndex = Integer.parseInt(shotId);
         handleShotOnBoard(player, game, cellIndex);
         ShotResultDto shotResultDto = handleShotOnFleet(player, game, cellIndex);
+        game.markTurn();
+        gameRepository.save(game);
         sendNotification(player, game, shotResultDto.getShotResult(), cellIndex);
         return shotResultDto;
     }

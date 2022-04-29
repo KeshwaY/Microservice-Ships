@@ -43,7 +43,7 @@ public class GameService {
 
     public GameDto create(String ownerEmail, GamePostDto gamePostDto) {
         User owner = userService.getRawUser(ownerEmail);
-        Game game = new Game(owner, new ArrayList<>(), new ArrayList<>());
+        Game game = new Game(owner, new ArrayList<>(), new ArrayList<>(), true);
         BoardGetDto board = boardService.createBoard(owner, game, gamePostDto.getBoard());
         FleetGetDto fleet = fleetService.create(owner, game, ((List<Board>) game.getBoards()).get(0));
         repository.save(game);

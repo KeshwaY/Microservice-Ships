@@ -29,6 +29,8 @@ public class Game {
     @DocumentReference
     @NonNull private Collection<Fleet> fleets;
 
+    @NonNull private boolean ownerTurn;
+
     public User getRelativeOpponent(User user) {
         return user.getEmail().equals(owner.getEmail()) ? opponent : owner;
     }
@@ -48,5 +50,13 @@ public class Game {
     public boolean containsUser(User user) {
         String email = user.getEmail();
         return (owner.getEmail().equals(email) || opponent.getEmail().equals(email));
+    }
+
+    public boolean isUserTurn(User user) {
+        return ownerTurn ? user.getEmail().equals(owner.getEmail()) : user.getEmail().equals(opponent.getEmail());
+    }
+
+    public void markTurn() {
+        ownerTurn = !ownerTurn;
     }
 }
