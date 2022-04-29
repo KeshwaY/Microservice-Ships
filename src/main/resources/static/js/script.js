@@ -19,6 +19,7 @@ let playerLeft
 let height
 let width
 
+let gameid
 // CELL INDEXING FROM [
 let id = 1
 
@@ -51,11 +52,97 @@ function connect() {
     stompClient = Stomp.over(socket)
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame)
-        stompClient.subscribe('/user/events', function (message) {
-            console.log(message)
+        stompClient.subscribe('/user/events', async function (message) {
+            let event = JSON.parse(message.body)
+            let eventType = event['eventType']
+            switch (eventType) {
+                case "ENEMY_JOIN": {
+                    init('enemy')
+                    break
+                }
+                case "ENEMY_SHOT": {
+                    console.log(event)
+                    let cell = event['cell']
+                    await shoot(cell, 'enemy')
+                    swapBoards()
+                    break
+                }
+                case "ENEMY_WIN": {
+                    alert('YOU LOST!')
+                    window.location.reload()
+                }
+            }
         })
     });
 
+}
+
+async function shoot(x, type) {
+    if (type === 'enemy') {
+        let playerCell = document.getElementById(x + ":player")
+        let color
+        if (playerCell.classList.contains('ship')) {
+            color = shootShipColor
+        } else {
+            color = shootWaterColor
+        }
+        await shootCell(x, color, type)
+        return
+    }
+    let cellId = x.id.toString().split(":")[0]
+    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/shots?game-id=" + gameid + "&cell-id=" + cellId
+    const request = new Request(requestURL, {
+        method: 'POST',
+        mode: 'cors'
+    })
+    const response = await fetch(request)
+    const shootMessage = await response.json()
+    const shotResult = shootMessage['shotResult']
+    console.log(shootMessage);
+    switch (shotResult) {
+        case 'MISS': {
+            await shootCell(cellId, shootWaterColor)
+            break
+        }
+        case 'SHIP_HIT': {
+            await shootCell(cellId, shootShipColor)
+            break
+        }
+        case 'SHIP_SUNK': {
+            let cellsList = shootMessage['cells']
+            cellsList.forEach(c => {
+                shootCell(c, shootWaterColor)
+            })
+            break
+        }
+        case 'FLEET_SUNK': {
+            let cellsList = shootMessage['cells']
+            cellsList.forEach(c => {
+                shootCell(c, shootWaterColor)
+            })
+            alert('YOU WON!')
+            window.location.reload()
+            break
+        }
+    }
+    swapBoards()
+}
+
+async function shootCell(x, color, type) {
+    if (type === 'enemy') {
+        document.getElementById(x + ":player").removeAttribute("onclick")
+        document.getElementById(x + ":player").style.backgroundColor = color
+        document.getElementById(x + ":player").style.borderColor = borderColor
+        document.getElementById(x + ":player").style.cursor = 'default'
+        await delay(100)
+        return
+    }
+
+    document.getElementById(x + ":enemy").removeAttribute("onclick")
+    document.getElementById(x + ":enemy").style.backgroundColor = color
+    document.getElementById(x + ":enemy").style.borderColor = borderColor
+    document.getElementById(x + ":enemy").style.cursor = 'default'
+    await delay(100)
 }
 
 async function resetBoardContainer() {
@@ -66,6 +153,7 @@ async function resetBoardContainer() {
     boardContainer.style.borderColor = "#3b4252"
 }
 
+
 async function createGame() {
     enemyAnimation = 'fadein'
     playerAnimation = 'fadeout'
@@ -74,9 +162,12 @@ async function createGame() {
     await resetBoardContainer()
 
     const game = {
-        "width": "10",
-        "height": "10"
+        "board": {
+            "width": 10,
+            "height": 10
+        }
     }
+
 
     const header = new Headers()
     header.append('Content-Type', 'application/json')
@@ -98,10 +189,15 @@ async function createGame() {
     width = boardSize["width"]
     height = boardSize["height"]
 
+    const fleet = createdGame['fleet']
+
+    gameid = gameID
+    let displayId = document.createElement('p')
+    displayId.classList.add('game-id')
+    displayId.textContent = 'game-id:' + gameid
+    body.appendChild(displayId)
     console.log(gameID)
-    console.log(boardSize)
-    init('player')
-    init('enemy')
+    init('player', fleet)
 }
 
 async function joinGame(gameID) {
@@ -110,7 +206,7 @@ async function joinGame(gameID) {
     enemyLeft = '-50vw'
     playerLeft = '30vw'
     await resetBoardContainer()
-    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/games/join/" + gameID
+    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/games/" + gameID
     const request = new Request(requestURL, {
         method: 'POST',
         mode: 'cors'
@@ -120,13 +216,17 @@ async function joinGame(gameID) {
     const joinedGameID = joinedGame["id"].toString()
     const boardSize = joinedGame["board"]
 
+    gameid = joinedGameID
+
     width = boardSize["width"]
     height = boardSize["height"]
 
-    init('player')
+    const fleet = joinedGame['fleet']
+
+
+    init('player', fleet)
     init('enemy')
 }
-
 
 function swapBoards() {
 
@@ -151,7 +251,7 @@ function boardAnimation() {
     enemyAnimation = temp
 }
 
-function init(type) {
+function init(type, fleet) {
     let container = document.createElement("div")
     container.classList.add('container')
     container.classList.add(type)
@@ -170,7 +270,7 @@ function init(type) {
     }
     id = 1
     body.appendChild(container)
-    createShips(type).then(r => {
+    createShips(fleet, type).then(r => {
         if (type === 'enemy') {
             document.getElementById('enemy').style.left = enemyLeft
             document.getElementById('enemy').classList.add(enemyAnimation)
@@ -181,27 +281,14 @@ function init(type) {
     })
 }
 
-async function createShips(type) {
+async function createShips(fleet, type) {
     if (type === 'player') {
-        document.getElementById("5:" + type).classList.add("ship")
-        document.getElementById("20:" + type).classList.add("ship")
-        document.getElementById("11:" + type).classList.add("ship")
+        fleet.forEach(ship => ship["masts"].forEach(cellID => {
+            document.getElementById(cellID + ":" + type).classList.add("ship")
+        } ))
     }
 }
 
 const delay = millis => new Promise((resolve, reject) => {
     setTimeout(_ => resolve(), millis)
 });
-
-async function shoot(x) {
-    await shootCell(x, shootWaterColor)
-    swapBoards()
-}
-
-async function shootCell(x, color) {
-    document.getElementById(x.id).removeAttribute("onclick")
-    document.getElementById(x.id).style.backgroundColor = color
-    document.getElementById(x.id).style.borderColor = borderColor
-    document.getElementById(x.id).style.cursor = 'default'
-    await delay(100)
-}

@@ -60,6 +60,13 @@ body {
     opacity: 0;
 }
 
+.game-id {
+    position: absolute;
+    color: var(--nord4) ;
+    margin: auto;
+    font-size: 0.7vw;
+}
+
 .boardContainer {
     transition: 0.5s;
     position: absolute;
