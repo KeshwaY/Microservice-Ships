@@ -15,6 +15,8 @@ import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
 @Service
 public class ShotService {
 
@@ -34,29 +36,24 @@ public class ShotService {
 
     public ShotResultDto shot(String email, String gameId, String shotId) {
         User player = userService.getRawUser(email);
-
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         if (!game.containsUser(player)) throw new NotFoundException();
-        
         int cellIndex = Integer.parseInt(shotId);
         handleShotOnBoard(player, game, cellIndex);
-
         ShotResultDto shotResultDto = handleShotOnFleet(player, game, cellIndex);
-
-        sendNotification(player, game, shotResultDto);
-
+        sendNotification(player, game, shotResultDto.getShotResult(), cellIndex);
         return shotResultDto;
     }
 
-    private void sendNotification(User player, Game game, ShotResultDto shotResultDto) {
+    private void sendNotification(User player, Game game, ShotResult shotResult, int index) {
         websocketService.notifyFrontEnd(
                 game.getRelativeOpponent(player).getEmail(),
-                new Event(EventType.ENEMY_SHOT, "Enemy shot")
+                new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
         );
-        if (shotResultDto.getShotResult() == ShotResult.FLEET_SUNK) {
+        if (shotResult == ShotResult.FLEET_SUNK) {
             websocketService.notifyFrontEnd(
                     game.getRelativeOpponent(player).getEmail(),
-                    new Event(EventType.ENEMY_WIN, "Enemy won")
+                    new Event(EventType.ENEMY_WIN, "Enemy won", index)
             );
         }
     }

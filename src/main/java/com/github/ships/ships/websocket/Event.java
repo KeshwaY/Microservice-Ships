@@ -1,14 +1,10 @@
 package com.github.ships.ships.websocket;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Data
-@RequiredArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor @RequiredArgsConstructor @Getter @Setter
 public class Event {
-    @NonNull private EventType eventType;
-    @NonNull private String message;
+    private final EventType eventType;
+    private final String message;
+    private Integer cell;
 }
