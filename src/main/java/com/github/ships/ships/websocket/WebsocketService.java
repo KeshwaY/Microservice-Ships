@@ -12,7 +12,7 @@ public class WebsocketService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void notifyFrontEnd(String username, EventType event) {
+    public void notifyFrontEnd(String username, Event event) {
         messagingTemplate.convertAndSendToUser(username, "/events", event);
     }
 }

@@ -1,5 +1,6 @@
 package com.github.ships.ships.board;
 
+import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.users.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
@@ -21,4 +22,12 @@ public class Board {
     @NonNull private Integer height;
 
     @NonNull private Map<Integer, Cell> cells;
+
+    public boolean containsIndex(int index) {
+        return cells.containsKey(index);
+    }
+
+    public boolean isValidShot(int index) {
+        return containsIndex(index) && cells.get(index) != Cell.HIT;
+    }
 }

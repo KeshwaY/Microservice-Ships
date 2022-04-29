@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Document
 @RequiredArgsConstructor @NoArgsConstructor @Getter @Setter
@@ -30,5 +31,22 @@ public class Game {
 
     public User getRelativeOpponent(User user) {
         return user.getEmail().equals(owner.getEmail()) ? opponent : owner;
+    }
+
+    public Optional<Board> getUserBoard(User user) {
+        return boards.stream()
+                .filter(b -> b.getPlayer().getEmail().equals(user.getEmail()))
+                .findFirst();
+    }
+
+    public Optional<Fleet> getUserFleet(User user) {
+        return fleets.stream()
+                .filter(f -> f.getPlayer().getEmail().equals(user.getEmail()))
+                .findFirst();
+    }
+
+    public boolean containsUser(User user) {
+        String email = user.getEmail();
+        return (owner.getEmail().equals(email) || opponent.getEmail().equals(email));
     }
 }

@@ -1,5 +1,6 @@
 package com.github.ships.ships.shot;
 
+import com.github.ships.ships.fleet.ShotResultDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,7 @@ public class ShotController {
     }
 
     @PostMapping
-    ResponseEntity<ShotDto> shot(
+    ResponseEntity<ShotResultDto> shot(
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("game-id") String gameId,
             @RequestParam("cell-id") String cellId

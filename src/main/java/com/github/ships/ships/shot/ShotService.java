@@ -1,24 +1,19 @@
 package com.github.ships.ships.shot;
 
+import com.github.ships.ships.InvalidShotException;
 import com.github.ships.ships.NotFoundException;
+import com.github.ships.ships.ShotResult;
 import com.github.ships.ships.board.Board;
 import com.github.ships.ships.board.BoardRepository;
-import com.github.ships.ships.board.Cell;
-import com.github.ships.ships.fleet.Fleet;
-import com.github.ships.ships.fleet.FleetRepository;
-import com.github.ships.ships.fleet.MastState;
-import com.github.ships.ships.fleet.Ship;
+import com.github.ships.ships.fleet.*;
 import com.github.ships.ships.game.Game;
 import com.github.ships.ships.game.GameRepository;
 import com.github.ships.ships.users.User;
 import com.github.ships.ships.users.UserService;
+import com.github.ships.ships.websocket.Event;
 import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 
 @Service
 public class ShotService {
@@ -37,50 +32,47 @@ public class ShotService {
         this.fleetRepository = fleetRepository;
     }
 
-    public ShotDto shot(String email, String gameId, String shotId) {
+    public ShotResultDto shot(String email, String gameId, String shotId) {
         User player = userService.getRawUser(email);
+
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
-        if (!List.of(game.getOwner().getEmail(), game.getOpponent().getEmail()).contains(email)) throw new NotFoundException();
+        if (!game.containsUser(player)) throw new NotFoundException();
+        
+        int cellIndex = Integer.parseInt(shotId);
+        handleShotOnBoard(player, game, cellIndex);
 
-        Board board = game.getBoards().stream().filter(b -> !b.getPlayer().getEmail().equals(email)).findFirst()
-                .orElseThrow(NotFoundException::new);
-        int cellId = Integer.parseInt(shotId);
-        if(!board.getCells().containsKey(cellId) || board.getCells().get(cellId) == Cell.HIT) throw new NotFoundException();
-        board.getCells().put(cellId, Cell.HIT);
-        boardRepository.save(board);
+        ShotResultDto shotResultDto = handleShotOnFleet(player, game, cellIndex);
 
-        ShotDto shotDto = null;
-        Fleet fleet = game.getFleets().stream().filter(f -> !f.getPlayer().getEmail().equals(email)).findFirst()
-                .orElseThrow(NotFoundException::new);
-        for (Ship ship : fleet.getShips()) {
-            if(ship.getMasts().containsKey(cellId)) {
-                ship.getMasts().put(cellId, MastState.HIT);
-                if (!ship.isAlive()) {
-                    Collection<CellHitDto> hit = new HashSet<>();
-                    ship.getMasts().forEach((k, v) -> hit.add(new CellHitDto(k, true)));
-                    ship.getExtraOccupied().forEach(o -> hit.add(new CellHitDto(o, false)));
-                    shotDto = new ShotDto("Ship sunk", hit);
-                    break;
-                }
-                shotDto = new ShotDto("Ship hit", List.of(new CellHitDto(cellId, true)));
-                break;
-            }
+        sendNotification(player, game, shotResultDto);
+
+        return shotResultDto;
+    }
+
+    private void sendNotification(User player, Game game, ShotResultDto shotResultDto) {
+        websocketService.notifyFrontEnd(
+                game.getRelativeOpponent(player).getEmail(),
+                new Event(EventType.ENEMY_SHOT, "Enemy shot")
+        );
+        if (shotResultDto.getShotResult() == ShotResult.FLEET_SUNK) {
+            websocketService.notifyFrontEnd(
+                    game.getRelativeOpponent(player).getEmail(),
+                    new Event(EventType.ENEMY_WIN, "Enemy won")
+            );
         }
+    }
 
+    private ShotResultDto handleShotOnFleet(User player, Game game, int cellIndex) {
+        Fleet fleet = game.getUserFleet(player).orElseThrow(NotFoundException::new);
+        ShotResultDto shotResultDto = fleet.placeShot(cellIndex);
         fleetRepository.save(fleet);
+        return shotResultDto;
+    }
 
-        if (shotDto == null) {
-            shotDto = new ShotDto("Miss", List.of(new CellHitDto(cellId, false)));
-        }
-
-        websocketService.notifyFrontEnd(game.getRelativeOpponent(player).getEmail(), EventType.ENEMY_SHOT);
-
-        if (fleet.getShips().stream().map(Ship::isAlive).filter(b -> b).findAny().isEmpty()) {
-            websocketService.notifyFrontEnd(game.getRelativeOpponent(player).getEmail(), EventType.ENEMY_WIN);
-            shotDto = new ShotDto("Fleet sunk", new HashSet<>());
-        }
-
-        return shotDto;
+    private void handleShotOnBoard(User player, Game game, int cellIndex) {
+        Board board = game.getUserBoard(player).orElseThrow(NotFoundException::new);
+        if (!board.containsIndex(cellIndex)) throw new NotFoundException();
+        if (!board.isValidShot(cellIndex)) throw new InvalidShotException();
+        boardRepository.save(board);
     }
 
 }

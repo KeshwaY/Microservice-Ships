@@ -10,10 +10,12 @@ import com.github.ships.ships.fleet.FleetGetDto;
 import com.github.ships.ships.fleet.FleetService;
 import com.github.ships.ships.users.User;
 import com.github.ships.ships.users.UserService;
+import com.github.ships.ships.websocket.Event;
 import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
 import org.springframework.stereotype.Service;
 
+import javax.sql.rowset.Joinable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +67,10 @@ public class GameService {
         );
         FleetGetDto fleet = fleetService.create(opponent, game, ((List<Board>) game.getBoards()).get(1));
         repository.save(game);
-        websocketService.notifyFrontEnd(ownerBoard.getPlayer().getEmail(), EventType.ENEMY_JOIN);
+        websocketService.notifyFrontEnd(
+                ownerBoard.getPlayer().getEmail(),
+                new Event(EventType.ENEMY_JOIN, "Enemy joined")
+        );
         return new GameDto(game.getId(), board, fleet.getShips());
     }
 }

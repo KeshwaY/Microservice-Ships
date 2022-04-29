@@ -1,9 +1,9 @@
 package com.github.ships.ships.fleet;
 
+import com.github.ships.ships.ShotResult;
 import lombok.*;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class Ship {
@@ -11,7 +11,26 @@ public class Ship {
     private Map<Integer, MastState> masts;
     private Collection<Integer> extraOccupied;
 
-    public boolean isAlive() {
-        return masts.values().stream().anyMatch(m -> m == MastState.ALIVE);
+    public ShotResultDto placeShot(int index) {
+        if (!masts.containsKey(index)) return new ShotResultDto(ShotResult.MISS, Set.of());
+        masts.put(index, MastState.HIT);
+        Set<Integer> indexes = new HashSet<>();
+        indexes.add(index);
+        if (!isDead()) {
+            return new ShotResultDto(ShotResult.SHIP_HIT, indexes);
+        }
+        return getResultOfDeadShip(indexes);
+    }
+
+    private ShotResultDto getResultOfDeadShip(Set<Integer> indexes) {
+        indexes.addAll(masts.keySet());
+        indexes.addAll(extraOccupied);
+        return new ShotResultDto(ShotResult.SHIP_SUNK, indexes);
+    }
+
+    public boolean isDead() {
+        return masts.values()
+                .stream()
+                .allMatch(m -> m == MastState.HIT);
     }
 }
