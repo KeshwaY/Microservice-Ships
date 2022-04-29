@@ -1,6 +1,7 @@
 package com.github.ships.ships.fleet;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 public enum ShipType {
     DESTROYER(1),
@@ -8,7 +9,7 @@ public enum ShipType {
     CRUISER(3),
     BATTLESHIP(4);
 
-    private static Map<Integer, ShipType> shipTypeMap;
+    private static Map<Integer, ShipType> shipTypeMap = new TreeMap<>();
 
     static {
         shipTypeMap.put(1, DESTROYER);
@@ -25,9 +26,5 @@ public enum ShipType {
 
     public static ShipType getBySize(int size) {
         return shipTypeMap.get(size);
-    }
-
-    public int getSize() {
-        return size;
     }
 }
