@@ -60,14 +60,20 @@ function connect() {
                     init('enemy')
                     break
                 }
-                case "ENEMY_SHOT": {
-                    console.log(event)
+                case "ENEMY_MISS": {
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     swapBoards()
                     break
                 }
+                case "ENEMY_SHOT": {
+                    let cell = event['cell']
+                    await shoot(cell, 'enemy')
+                    break
+                }
                 case "ENEMY_WIN": {
+                    let cell = event['cell']
+                    await shoot(cell, 'enemy')
                     alert('YOU LOST!')
                     window.location.reload()
                 }
@@ -102,6 +108,7 @@ async function shoot(x, type) {
     switch (shotResult) {
         case 'MISS': {
             await shootCell(cellId, shootWaterColor)
+            swapBoards()
             break
         }
         case 'SHIP_HIT': {
@@ -125,7 +132,6 @@ async function shoot(x, type) {
             break
         }
     }
-    swapBoards()
 }
 
 async function shootCell(x, color, type) {

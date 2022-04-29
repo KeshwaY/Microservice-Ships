@@ -54,12 +54,16 @@ public class ShotService {
     }
 
     private void sendNotification(User player, Game game, ShotResult shotResult, int index) {
-        websocketService.notifyFrontEnd(
-                game.getRelativeOpponent(player).getEmail(),
-                new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
-        );
-        if (shotResult == ShotResult.FLEET_SUNK) {
-            websocketService.notifyFrontEnd(
+        switch (shotResult) {
+            case MISS -> websocketService.notifyFrontEnd(
+                    game.getRelativeOpponent(player).getEmail(),
+                    new Event(EventType.ENEMY_MISS, "Enemy miss", index)
+            );
+            case SHIP_HIT, SHIP_SUNK -> websocketService.notifyFrontEnd(
+                    game.getRelativeOpponent(player).getEmail(),
+                    new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
+            );
+            case FLEET_SUNK -> websocketService.notifyFrontEnd(
                     game.getRelativeOpponent(player).getEmail(),
                     new Event(EventType.ENEMY_WIN, "Enemy won", index)
             );
