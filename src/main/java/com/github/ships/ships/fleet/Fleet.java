@@ -8,9 +8,9 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor @NoArgsConstructor @Getter @Setter
 public class Fleet {
@@ -49,4 +49,11 @@ public class Fleet {
                 .allMatch(Ship::isDead);
     }
 
+    public List<Integer> retrieveOccupiedCells() {
+        List<Integer> occupiedCells = new ArrayList<>();
+        ships.forEach(ship -> {
+            occupiedCells.addAll(ship.retrieveOccupiedCells());
+        });
+        return occupiedCells;
+    }
 }

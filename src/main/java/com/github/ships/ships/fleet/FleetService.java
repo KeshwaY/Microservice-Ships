@@ -8,9 +8,7 @@ import com.github.ships.ships.users.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FleetService {
@@ -24,41 +22,19 @@ public class FleetService {
     }
 
     public FleetGetDto create(User user, Game game, Board board) {
-        Ship firstShip = new Ship(
-                ShipType.DESTROYER,
-                Map.of(14, MastState.ALIVE),
-                List.of(3, 4, 5, 13, 15, 23, 24, 25)
-        );
-        Ship secondShip = new Ship(
-                ShipType.DESTROYER,
-                Map.of(17, MastState.ALIVE),
-                List.of(6, 7, 8, 16, 18, 26, 27, 28)
-        );
-        Map<Integer, Cell> cells = board.getCells();
-        cells.put(3, Cell.OCCUPIED);
-        cells.put(4, Cell.OCCUPIED);
-        cells.put(5, Cell.OCCUPIED);
-        cells.put(13, Cell.OCCUPIED);
-        cells.put(14, Cell.OCCUPIED);
-        cells.put(15, Cell.OCCUPIED);
-        cells.put(23, Cell.OCCUPIED);
-        cells.put(24, Cell.OCCUPIED);
-        cells.put(25, Cell.OCCUPIED);
+        int boardWidth = board.getWidth();
+        int boardHeight = board.getHeight();
+        Fleet fleet = generateFleet(boardWidth, boardHeight, user);
+        repository.save(fleet);
+        game.getFleets().add(fleet);
 
-        cells.put(6, Cell.OCCUPIED);
-        cells.put(7, Cell.OCCUPIED);
-        cells.put(8, Cell.OCCUPIED);
-        cells.put(16, Cell.OCCUPIED);
-        cells.put(17, Cell.OCCUPIED);
-        cells.put(18, Cell.OCCUPIED);
-        cells.put(26, Cell.OCCUPIED);
-        cells.put(27, Cell.OCCUPIED);
-        cells.put(28, Cell.OCCUPIED);
+        Map<Integer, Cell> cells = board.getCells();
+        List<Integer> occupiedCells = fleet.retrieveOccupiedCells();
+        occupiedCells.forEach(cellID -> {
+            cells.put(cellID, Cell.OCCUPIED);
+        });
         board.setCells(cells);
         boardRepository.save(board);
-
-        Fleet fleet = repository.save(new Fleet(List.of(firstShip, secondShip), user));
-        game.getFleets().add(fleet);
 
         return new FleetGetDto(fleet.getShips().stream()
                 .map(s -> new ShipGetDto(s.getType(), s.getMasts().keySet()))
@@ -66,4 +42,25 @@ public class FleetService {
         );
     }
 
+    private Fleet generateFleet(int boardWidth, int boardHeight, User user) {
+        List<ShipTemplate> templates = new ArrayList<>();
+        templates.add(new ShipTemplate(List.of(22, 32, 42, 52), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(24, 25, 26), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(55, 56, 57), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(10, 20), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(84, 85), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(71, 81), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(1), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(4), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(39), boardWidth, boardHeight));
+        templates.add(new ShipTemplate(List.of(89), boardWidth, boardHeight));
+        Collection<Ship> ships = new ArrayList<>();
+        templates.forEach(shipTemplate -> {
+            ShipType shipType = ShipType.getBySize(shipTemplate.getMasts().size());
+            Map<Integer, MastState> masts = shipTemplate.getMasts();
+            Collection<Integer> extraOccupied = shipTemplate.getAdjacentCells();
+            ships.add(new Ship(shipType, masts, extraOccupied));
+        });
+        return new Fleet(ships, user);
+    }
 }
