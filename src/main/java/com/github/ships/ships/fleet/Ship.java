@@ -41,7 +41,7 @@ public class Ship {
     public List<Integer> retrieveOccupiedCells() {
         List<Integer> occupiedCells = new ArrayList<>();
         occupiedCells.addAll(masts.keySet());
-        occupiedCells.addAll(occupiedCells);
+        occupiedCells.addAll(extraOccupied);
         return occupiedCells;
     }
 }
