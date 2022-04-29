@@ -52,11 +52,11 @@ public class Game {
         return (owner.getEmail().equals(email) || opponent.getEmail().equals(email));
     }
 
-    public boolean isUserTurn(User user) {
-        return ownerTurn ? user.getEmail().equals(owner.getEmail()) : user.getEmail().equals(opponent.getEmail());
-    }
+//    public boolean isUserTurn(User user) {
+//        return ownerTurn ? user.getEmail().equals(owner.getEmail()) : user.getEmail().equals(opponent.getEmail());
+//    }
 
-    public void markTurn() {
-        ownerTurn = !ownerTurn;
-    }
+//    public void markTurn() {
+//        ownerTurn = !ownerTurn;
+//    }
 }

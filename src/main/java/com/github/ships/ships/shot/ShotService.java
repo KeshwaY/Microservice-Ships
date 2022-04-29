@@ -43,12 +43,9 @@ public class ShotService {
         User player = userService.getRawUser(email);
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         if (!game.containsUser(player)) throw new NotFoundException();
-        if (!game.isUserTurn(player)) throw new NotUserTurnException();
         int cellIndex = Integer.parseInt(shotId);
         handleShotOnBoard(player, game, cellIndex);
         ShotResultDto shotResultDto = handleShotOnFleet(player, game, cellIndex);
-        game.markTurn();
-        gameRepository.save(game);
         sendNotification(player, game, shotResultDto.getShotResult(), cellIndex);
         return shotResultDto;
     }

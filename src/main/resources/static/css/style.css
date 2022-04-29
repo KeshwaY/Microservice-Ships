@@ -12,6 +12,16 @@ body {
     background-color: var(--nord0);
 }
 
+.turn {
+    transition: 0.5s;
+    top: 1.3vw;
+    position: absolute;
+    color: var(--nord4) ;
+    margin: auto;
+    font-size: 2vw;
+}
+
+
 .gamecreate {
     transition: 0.2s;
     position: absolute;

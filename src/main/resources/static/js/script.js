@@ -18,6 +18,8 @@ let enemyLeft
 let playerLeft
 let height
 let width
+let playerTurn = "YOUR TURN"
+let enemyTurn = "OPONENT's TURN"
 
 let gameid
 // CELL INDEXING FROM [
@@ -58,6 +60,11 @@ function connect() {
             switch (eventType) {
                 case "ENEMY_JOIN": {
                     init('enemy')
+                    let turn = document.createElement('p');
+                    turn.classList.add('turn')
+                    turn.innerText = playerTurn
+                    turn.setAttribute('id', 'turn')
+                    body.appendChild(turn)
                     break
                 }
                 case "ENEMY_MISS": {
@@ -102,6 +109,10 @@ async function shoot(x, type) {
         mode: 'cors'
     })
     const response = await fetch(request)
+    console.log(response.status)
+    if (response.status !== 200) {
+        return
+    }
     const shootMessage = await response.json()
     const shotResult = shootMessage['shotResult']
     console.log(shootMessage);
@@ -232,9 +243,21 @@ async function joinGame(gameID) {
 
     init('player', fleet)
     init('enemy')
+    let turn = document.createElement('p');
+    turn.setAttribute('id', 'turn')
+    turn.classList.add('turn')
+    turn.innerText = enemyTurn
+    body.appendChild(turn)
+
 }
 
 function swapBoards() {
+
+    if (document.getElementById('turn').innerText === enemyTurn) {
+        document.getElementById('turn').innerText = playerTurn
+    } else if (document.getElementById('turn').innerText === playerTurn) {
+        document.getElementById('turn').innerText = enemyTurn
+    }
 
     document.getElementById('enemy').style.left = playerLeft
     document.getElementById('player').style.left = enemyLeft
