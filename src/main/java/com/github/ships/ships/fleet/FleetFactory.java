@@ -37,6 +37,13 @@ public class FleetFactory {
         return fleetFactory.produceShips();
     }
 
+    public static List<Ship> produceRandomlyPlacedShips(int playerId, int boardWidth, int boardHeight) {
+        if (playerId < 1 || playerId > 2) {
+            throw new IllegalArgumentException("Player ID can be only 1 or 2");
+        }
+        return new RandomlyPlacedShipsGenerator(playerId, boardWidth, boardHeight).produceShips();
+    }
+
     private List<Ship> produceShips() {
         return shipsCollection.get(playerId);
     }
