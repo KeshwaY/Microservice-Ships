@@ -24,8 +24,9 @@ class RandomlyPlacedShipsGenerator {
 
     public List<Ship> produceShips() {
         List<Ship> ships = new ArrayList<>();
+        Random random = new Random();
 //        while (shipSizes.size() > 0) {
-        int randomShipSizeIndex = new Random().nextInt(shipSizes.size());
+        int randomShipSizeIndex = random.nextInt(shipSizes.size());
         ships.add(generateShip(shipSizes.get(randomShipSizeIndex)));
         shipSizes.remove(randomShipSizeIndex);
 //        }
