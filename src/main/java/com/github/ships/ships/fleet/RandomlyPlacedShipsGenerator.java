@@ -36,14 +36,8 @@ class RandomlyPlacedShipsGenerator {
         List<List<Integer>> allShipPositions = new ArrayList<>();
         addAllHorizontalPositions(allShipPositions, shipSize);
         if(shipSize > 1) addAllVerticalPositions(allShipPositions, shipSize);
-        allShipPositions.forEach(System.out::println);
 //TODO add to set masts and adjacent cells
         return null;
-    }
-
-    public static void main(String[] args) {
-        RandomlyPlacedShipsGenerator randomlyPlacedShipsGenerator = new RandomlyPlacedShipsGenerator(0, 10, 10);
-        randomlyPlacedShipsGenerator.produceShips();
     }
 
     private void addAllHorizontalPositions(List<List<Integer>> allShipPositions, int shipSize) {
