@@ -1,5 +1,7 @@
 package com.github.ships.ships.fleet;
 
+import com.github.ships.ships.users.User;
+
 import java.util.*;
 
 /**
@@ -9,14 +11,14 @@ import java.util.*;
  */
 class RandomlyPlacedShipsGenerator {
 
-    private final int playerId;
+    private final User user;
     private final int boardWidth;
     private final int boardHeight;
     private List<Integer> shipSizes;
     private Set<Integer> occupiedCells;
 
-    public RandomlyPlacedShipsGenerator(int playerId, int boardWidth, int boardHeight) {
-        this.playerId = playerId;
+    RandomlyPlacedShipsGenerator(User user, int boardWidth, int boardHeight) {
+        this.user = user;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         occupiedCells = new HashSet<>();
@@ -29,21 +31,24 @@ class RandomlyPlacedShipsGenerator {
      *
      * @return {@link java.util.List}
      */
-    public List<Ship> produceShips() {
-        List<Ship> ships = new ArrayList<>();
-        Random random = new Random();
-//        while (shipSizes.size() > 0) {
-        int randomShipSizeIndex = random.nextInt(shipSizes.size());
-        ships.add(generateShip(shipSizes.get(randomShipSizeIndex)));
-        shipSizes.remove(randomShipSizeIndex);
-//        }
-        return ships;
+    Fleet generateRandomlyPlacedFleet() {
+        Collection<Ship> ships = new ArrayList<>();
+        while (shipSizes.size() > 0) {
+            int randomShipSizeIndex = new Random().nextInt(shipSizes.size());
+            ships.add(generateShip(shipSizes.get(randomShipSizeIndex)));
+            shipSizes.remove(randomShipSizeIndex);
+        }
+        return new Fleet(ships, user);
     }
 
     private Ship generateShip(int shipSize) {
         List<List<Integer>> allLegalShipPositions = new PossibleShipPositionsGenerator(boardWidth, boardHeight).
                 generateShipPositions(shipSize, occupiedCells);
-//TODO add to set masts and adjacent cells
-        return null;
+        List<Integer> randomShipPosition =
+                allLegalShipPositions.get(new Random().nextInt(0, allLegalShipPositions.size()));
+        ShipTemplate shipTemplate = new ShipTemplate(randomShipPosition, boardWidth, boardHeight);
+        occupiedCells.addAll(shipTemplate.getAdjacentCells());
+        return new Ship(ShipType.getBySize(shipTemplate.getMasts().size()),
+                shipTemplate.getMasts(), shipTemplate.getAdjacentCells());
     }
 }
