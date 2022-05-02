@@ -25,6 +25,20 @@ public class FleetService {
         int boardWidth = board.getWidth();
         int boardHeight = board.getHeight();
         Fleet fleet = generateFleet(boardWidth, boardHeight, user);
+        postFleetCreateProcedure(game, board, fleet);
+        return getFleetGetDto(fleet);
+    }
+
+    public FleetGetDto createRandomlyPlacedFleet(User user, Game game, Board board) {
+        Fleet fleet = new RandomlyPlacedShipsGenerator(board.getWidth(), board.getHeight(), user).
+                generateRandomlyPlacedFleet();
+        repository.save(fleet);
+        game.getFleets().add(fleet);
+        postFleetCreateProcedure(game, board, fleet);
+        return getFleetGetDto(fleet);
+    }
+
+    private void postFleetCreateProcedure(Game game, Board board, Fleet fleet) {
         repository.save(fleet);
         game.getFleets().add(fleet);
 
@@ -35,7 +49,9 @@ public class FleetService {
         });
         board.setCells(cells);
         boardRepository.save(board);
+    }
 
+    private FleetGetDto getFleetGetDto(Fleet fleet) {
         return new FleetGetDto(fleet.getShips().stream()
                 .map(s -> new ShipGetDto(s.getType(), s.getMasts().keySet()))
                 .toList()

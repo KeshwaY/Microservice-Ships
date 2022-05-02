@@ -17,7 +17,7 @@ class RandomlyPlacedShipsGenerator {
     private List<Integer> shipSizes;
     private Set<Integer> occupiedCells;
 
-    RandomlyPlacedShipsGenerator(User user, int boardWidth, int boardHeight) {
+    RandomlyPlacedShipsGenerator(int boardWidth, int boardHeight, User user) {
         this.user = user;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
