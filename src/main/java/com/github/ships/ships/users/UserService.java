@@ -62,4 +62,8 @@ public class UserService {
         return new GenericResponseDto("Successfully deleted user with email: " + email);
     }
 
+    public User getRawUser(String email) {
+        return repository.findByEmail(email).orElseThrow(NotFoundException::new);
+    }
+
 }

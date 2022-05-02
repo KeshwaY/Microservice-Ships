@@ -1,73 +1,59 @@
 package com.github.ships.ships.fleet;
 
-import com.github.ships.ships.shot.StatusOfLegalShot;
-import lombok.Data;
+import com.github.ships.ships.NotFoundException;
+import com.github.ships.ships.ShotResult;
+import com.github.ships.ships.game.Game;
+import com.github.ships.ships.users.User;
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-@Document
-@Data
+@RequiredArgsConstructor @NoArgsConstructor @Getter @Setter
 public class Fleet {
 
     @Id
     private String id;
 
-    private String gameId;
-    private Integer playerId;
+    @NonNull private Collection<Ship> ships;
 
-    private int boardWidth;
-    private int boardHeight;
-    private List<Ship> ships;
+    @DocumentReference
+    @NonNull private User player;
 
-    public Fleet(String gameId, int playerId, int boardWidth, int boardHeight) {
-        this.gameId = gameId;
-        this.playerId = playerId;
-        this.boardWidth = boardWidth;
-        this.boardHeight = boardHeight;
-        this.ships = FleetFactory.produceShips(playerId, boardWidth, boardHeight);
-    }
-
-    public StatusOfLegalShot placeShot(int cellId) {
-        AtomicReference<StatusOfLegalShot> atomicShotResult = new AtomicReference<>(StatusOfLegalShot.HIT_WATER);
-        ships.stream()
-             .filter(ship -> ship.containsCellId(cellId))
-             .findFirst()
-             .ifPresent(ship -> atomicShotResult.set(ship.placeShot(cellId)));
-        StatusOfLegalShot shotResult = atomicShotResult.get();
-        if (shotResult == StatusOfLegalShot.SUNK_SHIP && !isAlive()) {
-            shotResult = StatusOfLegalShot.SUNK_FLEET;
+    public ShotResultDto placeShot(int index) {
+        List<ShotResultDto> shotResult = ships.stream()
+                .map(s -> s.placeShot(index))
+                .distinct()
+                .toList();
+        if (shotResult.size() == 1) {
+            return shotResult.get(0);
         }
-        return shotResult;
+        return getShotResultDto(shotResult);
     }
 
-    public List<Integer> retrieveSunkShipMastsCellIDs(int cellId) {
-        List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
-        ships.stream().filter(s -> s.containsCellId(cellId))
-                      .findFirst()
-                      .ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveMastsCellIDs()));
-        return sunkShipAdjacentCellIDs;
+    private ShotResultDto getShotResultDto(List<ShotResultDto> shotResult) {
+        ShotResultDto shotResultDto = shotResult.stream()
+                .dropWhile(s -> s.getShotResult() == ShotResult.MISS)
+                .findFirst().orElseThrow();
+        if (shotResultDto.getShotResult() == ShotResult.SHIP_SUNK && isDead()) {
+            return new ShotResultDto(ShotResult.FLEET_SUNK, shotResultDto.getCells());
+        }
+        return shotResultDto;
     }
 
-    public List<Integer> retrieveSunkShipAdjacentCellIDs(int cellId) {
-        List<Integer> sunkShipAdjacentCellIDs = new ArrayList<>();
-        ships.stream().filter(s -> s.containsCellId(cellId))
-                      .findFirst()
-                      .ifPresent(s -> sunkShipAdjacentCellIDs.addAll(s.retrieveAdjacentCellIDs(cellId)));
-        return sunkShipAdjacentCellIDs;
-    }
-
-    public List<Integer> retrieveMastsCellIDs() {
-        List<Integer> allMastsCellIDs = new ArrayList<>();
-        ships.forEach(ship -> allMastsCellIDs.addAll(ship.retrieveMastsCellIDs()));
-        return allMastsCellIDs;
-    }
-
-    private boolean isAlive() {
+    public boolean isDead() {
         return ships.stream()
-                    .anyMatch(Ship::isAlive);
+                .allMatch(Ship::isDead);
+    }
+
+    public List<Integer> retrieveOccupiedCells() {
+        List<Integer> occupiedCells = new ArrayList<>();
+        ships.forEach(ship -> {
+            occupiedCells.addAll(ship.retrieveOccupiedCells());
+        });
+        return occupiedCells;
     }
 }
