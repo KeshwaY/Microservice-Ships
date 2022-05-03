@@ -47,6 +47,7 @@ class RandomlyPlacedShipsGenerator {
         List<Integer> randomShipPosition =
                 allLegalShipPositions.get(new Random().nextInt(0, allLegalShipPositions.size()));
         ShipTemplate shipTemplate = new ShipTemplate(randomShipPosition, boardWidth, boardHeight);
+        occupiedCells.addAll(shipTemplate.getCellsIDs());
         occupiedCells.addAll(shipTemplate.getAdjacentCells());
         return new Ship(ShipType.getBySize(shipTemplate.getMasts().size()),
                 shipTemplate.getMasts(), shipTemplate.getAdjacentCells());

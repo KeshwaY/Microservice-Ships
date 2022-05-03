@@ -25,25 +25,17 @@ public class FleetService {
                 generateRandomlyPlacedFleet();
         repository.save(fleet);
         game.getFleets().add(fleet);
-        postFleetCreateProcedure(game, board, fleet);
-        return getFleetGetDto(fleet);
-    }
-
-    private void postFleetCreateProcedure(Game game, Board board, Fleet fleet) {
-        repository.save(fleet);
-        game.getFleets().add(fleet);
 
         Map<Integer, Cell> cells = board.getCells();
         List<Integer> occupiedCells = fleet.retrieveOccupiedCells();
         occupiedCells.forEach(cellID -> cells.put(cellID, Cell.OCCUPIED));
         board.setCells(cells);
         boardRepository.save(board);
-    }
 
-    private FleetGetDto getFleetGetDto(Fleet fleet) {
         return new FleetGetDto(fleet.getShips().stream()
                 .map(s -> new ShipGetDto(s.getType(), s.getMasts().keySet()))
                 .toList()
         );
     }
+
 }
