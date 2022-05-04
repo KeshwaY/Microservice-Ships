@@ -3,7 +3,7 @@ package com.github.ships.ships.security.roles;
 import com.github.ships.ships.GenericResponseDto;
 import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.ResourceAlreadyExistsException;
-import com.github.ships.ships.abstraction.GenericCRUDService;
+import com.github.ships.ships.GenericCRUDService;
 import com.github.ships.ships.security.authorities.Authority;
 import com.github.ships.ships.security.authorities.AuthorityRepository;
 import org.springframework.stereotype.Service;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-public class RoleService implements GenericCRUDService<RoleDTO, RoleDTO, RoleDTO, GenericResponseDto> {
+class RoleService implements GenericCRUDService<RoleDTO, RoleDTO, RoleDTO, GenericResponseDto> {
 
     private final RoleRepository repository;
     private final AuthorityRepository authorityRepository;
     private final RoleMapper mapper;
 
-    public RoleService(RoleRepository repository, AuthorityRepository authorityRepository, RoleMapper mapper) {
+    RoleService(RoleRepository repository, AuthorityRepository authorityRepository, RoleMapper mapper) {
         this.repository = repository;
         this.authorityRepository = authorityRepository;
         this.mapper = mapper;

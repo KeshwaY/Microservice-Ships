@@ -1,4 +1,4 @@
-package com.github.ships.ships.abstraction;
+package com.github.ships.ships;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

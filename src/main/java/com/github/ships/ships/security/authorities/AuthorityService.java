@@ -3,18 +3,18 @@ package com.github.ships.ships.security.authorities;
 import com.github.ships.ships.GenericResponseDto;
 import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.ResourceAlreadyExistsException;
-import com.github.ships.ships.abstraction.GenericCRUDService;
+import com.github.ships.ships.GenericCRUDService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 @Service
-public class AuthorityService implements GenericCRUDService<AuthorityDTO, AuthorityDTO, AuthorityDTO, GenericResponseDto> {
+class AuthorityService implements GenericCRUDService<AuthorityDTO, AuthorityDTO, AuthorityDTO, GenericResponseDto> {
 
     private final AuthorityRepository repository;
     private final AuthorityMapper mapper;
 
-    public AuthorityService(AuthorityRepository repository, AuthorityMapper mapper) {
+    AuthorityService(AuthorityRepository repository, AuthorityMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }

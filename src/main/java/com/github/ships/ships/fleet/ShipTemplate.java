@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.*;
 
 @Data
-public class ShipTemplate {
+class ShipTemplate {
     private List<Integer> cellsIDs;
     private int boardWidth;
     private int boardHeight;
@@ -13,7 +13,7 @@ public class ShipTemplate {
     private Map<Integer, MastState> masts;
     private Set<Integer> adjacentCells;
 
-    public ShipTemplate(List<Integer> cellsIDs, int boardWidth, int boardHeight) {
+    ShipTemplate(List<Integer> cellsIDs, int boardWidth, int boardHeight) {
         this.cellsIDs = cellsIDs;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
@@ -32,34 +32,10 @@ public class ShipTemplate {
                 .anyMatch(mastState -> mastState == MastState.ALIVE);
     }
 
-    public boolean containsCellId(int cellID) {
-        return masts.containsKey(cellID);
-    }
-
-    public Collection<Integer> retrieveMastsCellIDs() {
-        return new ArrayList(masts.keySet());
-    }
-
-    public Set<Integer> retrieveAdjacentCellIDs(int cellId) {
-        return new HashSet<>(adjacentCells);
-    }
-
     private Map<Integer, MastState> initMasts(List<Integer> cellsIDs) {
         HashMap<Integer, MastState> masts = new HashMap<>();
         cellsIDs.forEach(cellID -> masts.put(cellID, MastState.ALIVE));
         return masts;
-    }
-
-    private boolean changeMastState(int cellID) {
-        if (containsMast(cellID)) {
-            masts.put(cellID, MastState.HIT);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean containsMast(int cellID) {
-        return masts.containsKey(cellID);
     }
 
     private void addOccupiedFields(int cellID) {

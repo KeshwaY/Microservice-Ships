@@ -1,7 +1,7 @@
 package com.github.ships.ships.security.roles;
 
 import com.github.ships.ships.GenericResponseDto;
-import com.github.ships.ships.abstraction.GenericCRUDController;
+import com.github.ships.ships.GenericCRUDController;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

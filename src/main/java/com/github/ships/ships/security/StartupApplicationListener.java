@@ -16,12 +16,12 @@ import java.util.Locale;
 import java.util.Set;
 
 @Component
-public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
+class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private final AuthorityRepository authorityRepository;
     private final RoleRepository roleRepository;
 
-    public StartupApplicationListener(AuthorityRepository authorityRepository, RoleRepository roleRepository) {
+    StartupApplicationListener(AuthorityRepository authorityRepository, RoleRepository roleRepository) {
         this.authorityRepository = authorityRepository;
         this.roleRepository = roleRepository;
     }
