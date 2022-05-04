@@ -24,7 +24,7 @@ let playerLeft
 let height
 let width
 let playerTurn = "YOUR TURN"
-let enemyTurn = "OPONENT's TURN"
+let enemyTurn = "OPPONENT's TURN"
 
 let gameid
 // CELL INDEXING FROM [
@@ -66,6 +66,9 @@ function connect() {
             let eventType = event['eventType']
             switch (eventType) {
                 case "ENEMY_JOIN": {
+                    menuMusic.pause()
+                    gameInMusic.loop=true;
+                    gameInMusic.play()
                     init('enemy')
                     let turn = document.createElement('p');
                     turn.classList.add('turn')
@@ -196,7 +199,6 @@ async function createGame() {
         }
     }
 
-
     const header = new Headers()
     header.append('Content-Type', 'application/json')
     header.append('Authorization', 'Basic dGVzdEBlbWFpbC5jb206dGVzdA==')
@@ -226,9 +228,6 @@ async function createGame() {
     body.appendChild(displayId)
     console.log(gameID)
     init('player', fleet)
-    menuMusic.pause()
-    gameInMusic.loop=true;
-    gameInMusic.play()
 }
 
 async function joinGame(gameID) {
