@@ -41,8 +41,7 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/api/v1/games/**").hasAnyAuthority("BASIC_USER")
                 .mvcMatchers("/api/v1/shots/**").hasAnyAuthority("BASIC_USER")
-                .mvcMatchers("/**").authenticated()
-//                .mvcMatchers("/**").permitAll()
+                .mvcMatchers("/**").permitAll()
                 .and()
                 .csrf().disable()
                 .formLogin();
