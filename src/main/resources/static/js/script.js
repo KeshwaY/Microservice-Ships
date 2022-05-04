@@ -8,13 +8,8 @@ var shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
 const ip = 'http://localhost'
-const port = '8080'
+const port = '8081'
 const apiVersion = 'v1'
-
-// COLORS DEFINITION
-const shootShipColor = '#bf616a'
-const shootWaterColor = '#81a1c1'
-const borderColor = '#2e3440'
 
 // BOARDS PROPERTIES
 let enemyAnimation
@@ -56,6 +51,24 @@ function getGameIDFromPlayer() {
     joinGame(gameID)
 }
 
+function activateCells() {
+    let cells = document.getElementsByClassName('cell')
+    for (let cellElement of cells) {
+        if (cellElement.id.toString().includes('enemy')) {
+            cellElement.classList.remove('deactivate')
+        }
+    }
+}
+
+function deactivateCells() {
+    let cells = document.getElementsByClassName('cell')
+    for (let cellElement of cells) {
+        if (cellElement.id.toString().includes('enemy')) {
+            cellElement.classList.add('deactivate')
+        }
+    }
+}
+
 function connect() {
     const socket = new SockJS('/ships-websocket')
     stompClient = Stomp.over(socket)
@@ -83,6 +96,7 @@ function connect() {
                     shotWaterSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
+                    activateCells()
                     swapBoards()
                     break
                 }
@@ -110,15 +124,16 @@ function connect() {
 }
 
 async function shoot(x, type) {
+    deactivateCells()
     if (type === 'enemy') {
         let playerCell = document.getElementById(x + ":player")
-        let color
+        let cellType
         if (playerCell.classList.contains('ship')) {
-            color = shootShipColor
+            cellType = 'shipHit'
         } else {
-            color = shootWaterColor
+            cellType = 'cellHit'
         }
-        await shootCell(x, color, type)
+        await shootCell(x, cellType, type)
         return
     }
     let cellId = x.id.toString().split(":")[0]
@@ -137,37 +152,28 @@ async function shoot(x, type) {
     console.log(shootMessage);
     switch (shotResult) {
         case 'MISS': {
-            shotMastSound.load()
-            shotWaterSound.load()
-            shotWaterSound.play()
-            await shootCell(cellId, shootWaterColor)
+            await shootCell(cellId, 'cellHit')
             swapBoards()
+            activateCells()
             break
         }
         case 'SHIP_HIT': {
-            shotMastSound.load()
-            shotWaterSound.load()
-            shotMastSound.play()
-            await shootCell(cellId, shootShipColor)
+            await shootCell(cellId, 'shipHit')
+            activateCells()
             break
         }
         case 'SHIP_SUNK': {
-            shotMastSound.load()
-            shotWaterSound.load()
-            shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
-                shootCell(c, shootWaterColor)
+                shootCell(c, 'cellHit')
             })
+            activateCells()
             break
         }
         case 'FLEET_SUNK': {
-            shotMastSound.load()
-            shotWaterSound.load()
-            shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
-                shootCell(c, shootWaterColor)
+                shootCell(c, 'cellHit')
             })
             alert('YOU WON!')
             window.location.reload()
@@ -176,20 +182,14 @@ async function shoot(x, type) {
     }
 }
 
-async function shootCell(x, color, type) {
+async function shootCell(x, cellType, type) {
     if (type === 'enemy') {
-        document.getElementById(x + ":player").removeAttribute("onclick")
-        document.getElementById(x + ":player").style.backgroundColor = color
-        document.getElementById(x + ":player").style.borderColor = borderColor
-        document.getElementById(x + ":player").style.cursor = 'default'
+        document.getElementById(x + ":player").classList.add(cellType)
         await delay(100)
         return
     }
 
-    document.getElementById(x + ":enemy").removeAttribute("onclick")
-    document.getElementById(x + ":enemy").style.backgroundColor = color
-    document.getElementById(x + ":enemy").style.borderColor = borderColor
-    document.getElementById(x + ":enemy").style.cursor = 'default'
+    document.getElementById(x + ":enemy").classList.add(cellType)
     await delay(100)
 }
 
