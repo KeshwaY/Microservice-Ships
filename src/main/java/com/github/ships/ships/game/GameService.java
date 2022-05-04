@@ -13,7 +13,9 @@ import com.github.ships.ships.users.UserService;
 import com.github.ships.ships.websocket.Event;
 import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.tinylog.Logger;
 
 import javax.sql.rowset.Joinable;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class GameService {
         BoardGetDto board = boardService.createBoard(owner, game, gamePostDto.getBoard());
         FleetGetDto fleet = fleetService.create(owner, game, ((List<Board>) game.getBoards()).get(0));
         repository.save(game);
+        Logger.info(String.format("Game %s is created", game.getId()));
         return new GameDto(game.getId(), board, fleet.getShips());
     }
 
@@ -71,6 +74,7 @@ public class GameService {
                 ownerBoard.getPlayer().getEmail(),
                 new Event(EventType.ENEMY_JOIN, "Enemy joined")
         );
+        Logger.info(String.format("Opponent joined %s game.", game.getId()));
         return new GameDto(game.getId(), board, fleet.getShips());
     }
 }
