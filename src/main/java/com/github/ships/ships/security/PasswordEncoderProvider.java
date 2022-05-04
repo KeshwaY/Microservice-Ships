@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 
 @Component
-public class PasswordEncoderProvider {
+class PasswordEncoderProvider {
     @Bean
-    public PasswordEncoder getInstance() {
+    PasswordEncoder getInstance() {
         return new BCryptPasswordEncoder(13, new SecureRandom());
     }
 }

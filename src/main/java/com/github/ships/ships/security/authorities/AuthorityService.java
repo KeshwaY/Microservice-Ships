@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-public class AuthorityService implements GenericCRUDService<AuthorityDTO, AuthorityDTO, AuthorityDTO, GenericResponseDto> {
+class AuthorityService implements GenericCRUDService<AuthorityDTO, AuthorityDTO, AuthorityDTO, GenericResponseDto> {
 
     private final AuthorityRepository repository;
     private final AuthorityMapper mapper;
 
-    public AuthorityService(AuthorityRepository repository, AuthorityMapper mapper) {
+    AuthorityService(AuthorityRepository repository, AuthorityMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }

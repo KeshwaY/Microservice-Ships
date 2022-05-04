@@ -10,12 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
-public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
+class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurityConfigurerImpl(
+    WebSecurityConfigurerImpl(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder
     ) {
@@ -50,12 +50,12 @@ public class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public RestAuthenticationEntryPoint getRestAuthenticationEntryPoint() {
+    RestAuthenticationEntryPoint getRestAuthenticationEntryPoint() {
         return new RestAuthenticationEntryPoint();
     }
 
     @Bean
-    public CustomAccessDeniedHandler getCustomAccessDeniedHandler() {
+    CustomAccessDeniedHandler getCustomAccessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
 
