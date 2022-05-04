@@ -2,6 +2,7 @@ package com.github.ships.ships.fleet;
 
 import com.github.ships.ships.users.User;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 /**
@@ -34,7 +35,7 @@ class RandomlyPlacedShipsGenerator {
     Fleet generateRandomlyPlacedFleet() {
         Collection<Ship> ships = new ArrayList<>();
         while (shipSizes.size() > 0) {
-            int randomShipSizeIndex = new Random().nextInt(shipSizes.size());
+            int randomShipSizeIndex = new SecureRandom().nextInt(shipSizes.size());
             ships.add(generateShip(shipSizes.get(randomShipSizeIndex)));
             shipSizes.remove(randomShipSizeIndex);
         }
@@ -45,7 +46,7 @@ class RandomlyPlacedShipsGenerator {
         List<List<Integer>> allLegalShipPositions = new PossibleShipPositionsGenerator(boardWidth, boardHeight).
                 generateShipPositions(shipSize, occupiedCells);
         List<Integer> randomShipPosition =
-                allLegalShipPositions.get(new Random().nextInt(0, allLegalShipPositions.size()));
+                allLegalShipPositions.get(new SecureRandom().nextInt(0, allLegalShipPositions.size()));
         ShipTemplate shipTemplate = new ShipTemplate(randomShipPosition, boardWidth, boardHeight);
         occupiedCells.addAll(shipTemplate.getCellsIDs());
         occupiedCells.addAll(shipTemplate.getAdjacentCells());

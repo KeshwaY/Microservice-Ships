@@ -43,25 +43,26 @@ public class ShotService {
         User player = userService.getRawUser(email);
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         if (!game.containsUser(player)) throw new NotFoundException();
+        User opponent = game.getRelativeOpponent(player);
         int cellIndex = Integer.parseInt(shotId);
-        handleShotOnBoard(player, game, cellIndex);
-        ShotResultDto shotResultDto = handleShotOnFleet(player, game, cellIndex);
-        sendNotification(player, game, shotResultDto.getShotResult(), cellIndex);
+        handleShotOnBoard(opponent, game, cellIndex);
+        ShotResultDto shotResultDto = handleShotOnFleet(opponent, game, cellIndex);
+        sendNotification(opponent, game, shotResultDto.getShotResult(), cellIndex);
         return shotResultDto;
     }
 
     private void sendNotification(User player, Game game, ShotResult shotResult, int index) {
         switch (shotResult) {
             case MISS -> websocketService.notifyFrontEnd(
-                    game.getRelativeOpponent(player).getEmail(),
+                    player.getEmail(),
                     new Event(EventType.ENEMY_MISS, "Enemy miss", index)
             );
             case SHIP_HIT, SHIP_SUNK -> websocketService.notifyFrontEnd(
-                    game.getRelativeOpponent(player).getEmail(),
+                    player.getEmail(),
                     new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
             );
             case FLEET_SUNK -> websocketService.notifyFrontEnd(
-                    game.getRelativeOpponent(player).getEmail(),
+                    player.getEmail(),
                     new Event(EventType.ENEMY_WIN, "Enemy won", index)
             );
         }

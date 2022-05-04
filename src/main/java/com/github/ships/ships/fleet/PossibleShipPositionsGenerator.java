@@ -39,11 +39,11 @@ class PossibleShipPositionsGenerator {
     private void addAllHorizontalPositions(List<List<Integer>> allShipPositions, int shipSize,
                                            Set<Integer> occupiedCells) {
         List<List<Integer>> allHorizontalPositions = new ArrayList<>();
-        Stream.iterate(1, i -> i + 1).limit(boardWidth * boardHeight - shipSize + 1).
+        Stream.iterate(1, i -> i + 1).limit((long) boardWidth * boardHeight - shipSize + 1).
                 forEach(i -> addHorizontalShipPosition(i, shipSize, allHorizontalPositions));
         allHorizontalPositions.stream().filter(p -> isShipInOneBoardLine(p) && !isAnyPositionOccupied(p,
                         occupiedCells)).
-                forEach(p -> allShipPositions.add(p));
+                forEach(allShipPositions::add);
     }
 
     private void addHorizontalShipPosition(Integer cellId, int shipSize, List<List<Integer>> allHorizontalPositions) {
@@ -58,10 +58,10 @@ class PossibleShipPositionsGenerator {
     private void addAllVerticalPositions(List<List<Integer>> allShipPositions, int shipSize,
                                          Set<Integer> occupiedCells) {
         List<List<Integer>> allVerticalPositions = new ArrayList<>();
-        Stream.iterate(1, i -> i + 1).limit(boardWidth * boardHeight - (shipSize - 1) * boardWidth).
+        Stream.iterate(1, i -> i + 1).limit((long) boardWidth * boardHeight - (long) (shipSize - 1) * boardWidth).
                 forEach(i -> addVerticalShipPosition(i, shipSize, allVerticalPositions));
         allVerticalPositions.stream().filter(p -> !isAnyPositionOccupied(p, occupiedCells)).
-                forEach(p -> allShipPositions.add(p));
+                forEach(allShipPositions::add);
     }
 
     private void addVerticalShipPosition(Integer cellId, int shipSize, List<List<Integer>> allVerticalPositions) {
