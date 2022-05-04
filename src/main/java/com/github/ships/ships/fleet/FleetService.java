@@ -6,6 +6,7 @@ import com.github.ships.ships.board.Cell;
 import com.github.ships.ships.game.Game;
 import com.github.ships.ships.users.User;
 import org.springframework.stereotype.Service;
+import org.tinylog.Logger;
 
 import java.util.*;
 
@@ -31,6 +32,7 @@ public class FleetService {
         occupiedCells.forEach(cellID -> cells.put(cellID, Cell.OCCUPIED));
         board.setCells(cells);
         boardRepository.save(board);
+        Logger.info(String.format("Fleet for %s is initialized", user.getName()));
 
         return new FleetGetDto(fleet.getShips().stream()
                 .map(s -> new ShipGetDto(s.getType(), s.getMasts().keySet()))

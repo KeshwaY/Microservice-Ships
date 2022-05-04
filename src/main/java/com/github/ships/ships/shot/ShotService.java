@@ -16,6 +16,7 @@ import com.github.ships.ships.websocket.Event;
 import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
 import org.springframework.stereotype.Service;
+import org.tinylog.Logger;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -53,18 +54,27 @@ public class ShotService {
 
     private void sendNotification(User player, Game game, ShotResult shotResult, int index) {
         switch (shotResult) {
-            case MISS -> websocketService.notifyFrontEnd(
-                    player.getEmail(),
-                    new Event(EventType.ENEMY_MISS, "Enemy miss", index)
-            );
-            case SHIP_HIT, SHIP_SUNK -> websocketService.notifyFrontEnd(
-                    player.getEmail(),
-                    new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
-            );
-            case FLEET_SUNK -> websocketService.notifyFrontEnd(
-                    player.getEmail(),
-                    new Event(EventType.ENEMY_WIN, "Enemy won", index)
-            );
+            case MISS -> {
+                websocketService.notifyFrontEnd(
+                        player.getEmail(),
+                        new Event(EventType.ENEMY_MISS, "Enemy miss", index)
+                );
+                Logger.info(String.format("%s's opponent shoot and missed.", player.getName()));
+            }
+            case SHIP_HIT, SHIP_SUNK -> {
+                websocketService.notifyFrontEnd(
+                        player.getEmail(),
+                        new Event(EventType.ENEMY_SHOT, "Enemy shot", index)
+                );
+                Logger.info(String.format("%s's opponent shoot and hit.", player.getName()));
+            }
+            case FLEET_SUNK -> {
+                websocketService.notifyFrontEnd(
+                        player.getEmail(),
+                        new Event(EventType.ENEMY_WIN, "Enemy won", index)
+                );
+                Logger.info(String.format("%s's opponent shoot and won.", player.getName()));
+            }
         }
     }
 

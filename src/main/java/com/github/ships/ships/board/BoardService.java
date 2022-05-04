@@ -5,6 +5,7 @@ import com.github.ships.ships.users.User;
 import com.github.ships.ships.users.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tinylog.Logger;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class BoardService {
         );
         repository.save(board);
         game.getBoards().add(board);
+        Logger.info(String.format("Board for %s is created.", user.getName()));
         return new BoardGetDto(boardPostDto.getWidth(), boardPostDto.getHeight());
     }
 
