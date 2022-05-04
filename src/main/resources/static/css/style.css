@@ -12,6 +12,14 @@ body {
     background-color: var(--nord0);
 }
 
+.gameid {
+    transition: 0.5s;
+    color: var(--nord4) ;
+    margin: auto;
+    font-size: 2vw;
+    text-align: center
+}
+
 .turn {
     transition: 0.5s;
     top: 1.3vw;

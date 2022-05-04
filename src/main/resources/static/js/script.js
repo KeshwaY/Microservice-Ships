@@ -239,8 +239,8 @@ async function createGame() {
 
     gameid = gameID
     let displayId = document.createElement('p')
-    displayId.classList.add('game-id')
-    displayId.textContent = 'game-id:' + gameid
+    displayId.classList.add('gameid')
+    displayId.textContent = 'Game ID:\n' + gameid
     body.appendChild(displayId)
     console.log(gameID)
     init('player', fleet)
