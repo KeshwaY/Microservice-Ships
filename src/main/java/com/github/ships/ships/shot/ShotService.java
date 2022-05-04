@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ShotService {
+class ShotService {
 
     private final UserService userService;
     private final GameRepository gameRepository;
@@ -32,7 +32,7 @@ public class ShotService {
     private final BoardRepository boardRepository;
     private final FleetRepository fleetRepository;
 
-    public ShotService(UserService userService, GameRepository gameRepository, WebsocketService websocketService, BoardRepository boardRepository, FleetRepository fleetRepository) {
+    ShotService(UserService userService, GameRepository gameRepository, WebsocketService websocketService, BoardRepository boardRepository, FleetRepository fleetRepository) {
         this.userService = userService;
         this.gameRepository = gameRepository;
         this.websocketService = websocketService;
@@ -40,7 +40,7 @@ public class ShotService {
         this.fleetRepository = fleetRepository;
     }
 
-    public ShotResultDto shot(String email, String gameId, String shotId) {
+    ShotResultDto shot(String email, String gameId, String shotId) {
         User player = userService.getRawUser(email);
         Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         if (!game.containsUser(player)) throw new NotFoundException();

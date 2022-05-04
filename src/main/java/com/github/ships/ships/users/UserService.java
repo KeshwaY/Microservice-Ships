@@ -43,27 +43,27 @@ public class UserService {
         return mapper.userToUserGetDTO(repository.save(user));
     }
 
-    private Role getUserRole() {
-        return roleRepository.findByAuthoritiesIsContaining(
-                authorityRepository.findByName("BASIC_USER")
-                        .orElseThrow(NotFoundException::new))
-                .orElseThrow(NotFoundException::new
-        );
+    public User getRawUser(String email) {
+        return repository.findByEmail(email).orElseThrow(NotFoundException::new);
     }
 
-    public UserGetDTO get(String email) {
+    UserGetDTO get(String email) {
         User user = repository.findByEmail(email).orElseThrow(NotFoundException::new);
         return mapper.userToUserGetDTO(user);
     }
 
-    public GenericResponseDto delete(String email) {
+    GenericResponseDto delete(String email) {
         User user = repository.findByEmail(email).orElseThrow(NotFoundException::new);
         repository.delete(user);
         return new GenericResponseDto("Successfully deleted user with email: " + email);
     }
 
-    public User getRawUser(String email) {
-        return repository.findByEmail(email).orElseThrow(NotFoundException::new);
+    private Role getUserRole() {
+        return roleRepository.findByAuthoritiesIsContaining(
+                        authorityRepository.findByName("BASIC_USER")
+                                .orElseThrow(NotFoundException::new))
+                .orElseThrow(NotFoundException::new
+                );
     }
 
 }
