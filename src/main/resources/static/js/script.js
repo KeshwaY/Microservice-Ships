@@ -1,6 +1,9 @@
 const body = document.getElementsByTagName("body")[0]
 var menuMusic = new Audio('../assets/audio/menuambience.mp3')
 var gameInMusic = new Audio('../assets/audio/gameambience.mp3')
+var shotMastSound = new Audio('../assets/audio/shot_mast.mp3')
+var shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
+
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
@@ -122,15 +125,19 @@ async function shoot(x, type) {
     console.log(shootMessage);
     switch (shotResult) {
         case 'MISS': {
+            shotWaterSound.play()
             await shootCell(cellId, shootWaterColor)
             swapBoards()
             break
         }
         case 'SHIP_HIT': {
+            shotMastSound.play()
             await shootCell(cellId, shootShipColor)
+            shotMastSound.play()
             break
         }
         case 'SHIP_SUNK': {
+            shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
                 shootCell(c, shootWaterColor)
@@ -138,6 +145,7 @@ async function shoot(x, type) {
             break
         }
         case 'FLEET_SUNK': {
+            shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
                 shootCell(c, shootWaterColor)
