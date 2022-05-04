@@ -125,6 +125,24 @@ body {
     background-color: var(--nord1);
 }
 
+.shipHit {
+    background-color: #bf616a;
+    border-color: #2e3440;
+    cursor: default;
+    pointer-events: none;
+}
+
+.cellHit {
+    /*background-color: #81a1c1;*/
+    background-color: var(--nord1);
+    cursor: default;
+    pointer-events: none;
+}
+
+.deactivate {
+    pointer-events: none;
+}
+
 .fadeout {
     animation-name: fadeout-animation;
     animation-duration: 2s;

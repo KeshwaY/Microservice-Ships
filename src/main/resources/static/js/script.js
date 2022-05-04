@@ -1,15 +1,15 @@
 const body = document.getElementsByTagName("body")[0]
+var menuMusic = new Audio('../assets/audio/menuambience.mp3')
+var gameInMusic = new Audio('../assets/audio/gameambience.mp3')
+var shotMastSound = new Audio('../assets/audio/shot_mast.mp3')
+var shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
+
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
 const ip = 'http://localhost'
 const port = '8080'
 const apiVersion = 'v1'
-
-// COLORS DEFINITION
-const shootShipColor = '#bf616a'
-const shootWaterColor = '#81a1c1'
-const borderColor = '#2e3440'
 
 // BOARDS PROPERTIES
 let enemyAnimation
@@ -19,11 +19,14 @@ let playerLeft
 let height
 let width
 let playerTurn = "YOUR TURN"
-let enemyTurn = "OPONENT's TURN"
+let enemyTurn = "OPPONENT's TURN"
 
 let gameid
 // CELL INDEXING FROM [
 let id = 1
+
+menuMusic.loop=true;
+menuMusic.play()
 
 // CONNECT WITH BACKEND
 connect()
@@ -48,6 +51,23 @@ function getGameIDFromPlayer() {
     joinGame(gameID)
 }
 
+function activateCells() {
+    let cells = document.getElementsByClassName('cell')
+    for (let cellElement of cells) {
+        if (cellElement.id.toString().includes('enemy')) {
+            cellElement.classList.remove('deactivate')
+        }
+    }
+}
+
+function deactivateCells() {
+    let cells = document.getElementsByClassName('cell')
+    for (let cellElement of cells) {
+        if (cellElement.id.toString().includes('enemy')) {
+            cellElement.classList.add('deactivate')
+        }
+    }
+}
 
 function connect() {
     const socket = new SockJS('/ships-websocket')
@@ -59,6 +79,9 @@ function connect() {
             let eventType = event['eventType']
             switch (eventType) {
                 case "ENEMY_JOIN": {
+                    menuMusic.pause()
+                    gameInMusic.loop=true;
+                    gameInMusic.play()
                     init('enemy')
                     let turn = document.createElement('p');
                     turn.classList.add('turn')
@@ -68,17 +91,27 @@ function connect() {
                     break
                 }
                 case "ENEMY_MISS": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotWaterSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
+                    activateCells()
                     swapBoards()
                     break
                 }
                 case "ENEMY_SHOT": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotMastSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     break
                 }
                 case "ENEMY_WIN": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotMastSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     alert('YOU LOST!')
@@ -91,15 +124,16 @@ function connect() {
 }
 
 async function shoot(x, type) {
+    deactivateCells()
     if (type === 'enemy') {
         let playerCell = document.getElementById(x + ":player")
-        let color
+        let cellType
         if (playerCell.classList.contains('ship')) {
-            color = shootShipColor
+            cellType = 'shipHit'
         } else {
-            color = shootWaterColor
+            cellType = 'cellHit'
         }
-        await shootCell(x, color, type)
+        await shootCell(x, cellType, type)
         return
     }
     let cellId = x.id.toString().split(":")[0]
@@ -118,25 +152,28 @@ async function shoot(x, type) {
     console.log(shootMessage);
     switch (shotResult) {
         case 'MISS': {
-            await shootCell(cellId, shootWaterColor)
+            await shootCell(cellId, 'cellHit')
             swapBoards()
+            activateCells()
             break
         }
         case 'SHIP_HIT': {
-            await shootCell(cellId, shootShipColor)
+            await shootCell(cellId, 'shipHit')
+            activateCells()
             break
         }
         case 'SHIP_SUNK': {
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
-                shootCell(c, shootWaterColor)
+                shootCell(c, 'cellHit')
             })
+            activateCells()
             break
         }
         case 'FLEET_SUNK': {
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
-                shootCell(c, shootWaterColor)
+                shootCell(c, 'cellHit')
             })
             alert('YOU WON!')
             window.location.reload()
@@ -145,20 +182,14 @@ async function shoot(x, type) {
     }
 }
 
-async function shootCell(x, color, type) {
+async function shootCell(x, cellType, type) {
     if (type === 'enemy') {
-        document.getElementById(x + ":player").removeAttribute("onclick")
-        document.getElementById(x + ":player").style.backgroundColor = color
-        document.getElementById(x + ":player").style.borderColor = borderColor
-        document.getElementById(x + ":player").style.cursor = 'default'
+        document.getElementById(x + ":player").classList.add(cellType)
         await delay(100)
         return
     }
 
-    document.getElementById(x + ":enemy").removeAttribute("onclick")
-    document.getElementById(x + ":enemy").style.backgroundColor = color
-    document.getElementById(x + ":enemy").style.borderColor = borderColor
-    document.getElementById(x + ":enemy").style.cursor = 'default'
+    document.getElementById(x + ":enemy").classList.add(cellType)
     await delay(100)
 }
 
@@ -169,7 +200,6 @@ async function resetBoardContainer() {
     boardContainer.style.backgroundColor = "#3b4252"
     boardContainer.style.borderColor = "#3b4252"
 }
-
 
 async function createGame() {
     enemyAnimation = 'fadein'
@@ -184,7 +214,6 @@ async function createGame() {
             "height": 10
         }
     }
-
 
     const header = new Headers()
     header.append('Content-Type', 'application/json')
@@ -218,6 +247,9 @@ async function createGame() {
 }
 
 async function joinGame(gameID) {
+    menuMusic.pause()
+    gameInMusic.loop=true;
+    gameInMusic.play()
     enemyAnimation = 'fadeout'
     playerAnimation = 'fadein'
     enemyLeft = '-50vw'
@@ -240,7 +272,6 @@ async function joinGame(gameID) {
 
     const fleet = joinedGame['fleet']
 
-
     init('player', fleet)
     init('enemy')
     let turn = document.createElement('p');
@@ -248,7 +279,6 @@ async function joinGame(gameID) {
     turn.classList.add('turn')
     turn.innerText = enemyTurn
     body.appendChild(turn)
-
 }
 
 function swapBoards() {
