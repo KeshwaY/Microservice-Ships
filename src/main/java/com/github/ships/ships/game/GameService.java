@@ -23,14 +23,14 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-public class GameService {
+class GameService {
     private final GameRepository repository;
     private final BoardService boardService;
     private final UserService userService;
     private final FleetService fleetService;
     private final WebsocketService websocketService;
 
-    public GameService(
+    GameService(
             GameRepository repository,
             BoardService boardService,
             UserService userService,
@@ -43,7 +43,7 @@ public class GameService {
         this.websocketService = websocketService;
     }
 
-    public GameDto create(String ownerEmail, GamePostDto gamePostDto) {
+    GameDto create(String ownerEmail, GamePostDto gamePostDto) {
         User owner = userService.getRawUser(ownerEmail);
         Game game = new Game(owner, new ArrayList<>(), new ArrayList<>(), true);
         BoardGetDto board = boardService.createBoard(owner, game, gamePostDto.getBoard());
@@ -53,7 +53,7 @@ public class GameService {
         return new GameDto(game.getId(), board, fleet.getShips());
     }
 
-    public GameDto join(String opponentEmail, String gameId) {
+    GameDto join(String opponentEmail, String gameId) {
         Game game = repository.findById(gameId).orElseThrow(NotFoundException::new);
         if (game.getBoards().size() == 2) throw new ResourceAlreadyExistsException();
         User opponent = userService.getRawUser(opponentEmail);
