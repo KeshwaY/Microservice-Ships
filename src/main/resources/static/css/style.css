@@ -12,7 +12,7 @@ body {
     background-color: var(--nord0);
 }
 
-.gameid {
+.gameId {
     transition: 0.5s;
     color: var(--nord4) ;
     margin: auto;

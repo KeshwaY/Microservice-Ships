@@ -239,7 +239,7 @@ async function createGame() {
 
     gameid = gameID
     let displayId = document.createElement('p')
-    displayId.classList.add('gameid')
+    displayId.classList.add('gameId')
     displayId.textContent = 'Game ID:\n' + gameid
     body.appendChild(displayId)
     console.log(gameID)
