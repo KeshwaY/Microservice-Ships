@@ -12,6 +12,15 @@ body {
     background-color: var(--nord0);
 }
 
+.gameId {
+    transition: 0.5s;
+    color: var(--nord4) ;
+    margin: auto;
+    font-size: 0.8vw;
+    position: absolute;
+    text-align: left
+}
+
 .turn {
     transition: 0.5s;
     top: 1.3vw;
@@ -20,7 +29,6 @@ body {
     margin: auto;
     font-size: 2vw;
 }
-
 
 .gamecreate {
     transition: 0.2s;
