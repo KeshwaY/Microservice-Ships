@@ -8,7 +8,7 @@ var shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
 const ip = 'http://localhost'
-const port = '8081'
+const port = '8080'
 const apiVersion = 'v1'
 
 // BOARDS PROPERTIES
