@@ -1,6 +1,7 @@
 package com.github.ships.ships.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,7 +42,8 @@ class WebSecurityConfigurerImpl extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/api/v1/games/**").hasAnyAuthority("BASIC_USER")
                 .mvcMatchers("/api/v1/shots/**").hasAnyAuthority("BASIC_USER")
-                .mvcMatchers("/**").permitAll()
+                .mvcMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
+                .mvcMatchers("/**").authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin();
