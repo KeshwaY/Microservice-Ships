@@ -1,4 +1,4 @@
-package com.github.ships.ships.abstraction;
+package com.github.ships.ships;
 
 import java.util.Collection;
 

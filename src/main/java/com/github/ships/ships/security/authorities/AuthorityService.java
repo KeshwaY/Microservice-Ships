@@ -3,7 +3,7 @@ package com.github.ships.ships.security.authorities;
 import com.github.ships.ships.GenericResponseDto;
 import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.ResourceAlreadyExistsException;
-import com.github.ships.ships.abstraction.GenericCRUDService;
+import com.github.ships.ships.GenericCRUDService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

@@ -44,12 +44,12 @@ public class Fleet {
         return shotResultDto;
     }
 
-    public boolean isDead() {
+    private boolean isDead() {
         return ships.stream()
                 .allMatch(Ship::isDead);
     }
 
-    public List<Integer> retrieveOccupiedCells() {
+    List<Integer> retrieveOccupiedCells() {
         List<Integer> occupiedCells = new ArrayList<>();
         ships.forEach(ship -> {
             occupiedCells.addAll(ship.retrieveOccupiedCells());

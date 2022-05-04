@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
-public class Ship {
+class Ship {
     private ShipType type;
     private Map<Integer, MastState> masts;
     private Collection<Integer> extraOccupied;
 
-    public ShotResultDto placeShot(int index) {
+    ShotResultDto placeShot(int index) {
         if (!masts.containsKey(index)) return new ShotResultDto(ShotResult.MISS, Set.of());
         masts.put(index, MastState.HIT);
         Set<Integer> indexes = new HashSet<>();
@@ -26,22 +26,22 @@ public class Ship {
         return getResultOfDeadShip(indexes);
     }
 
-    private ShotResultDto getResultOfDeadShip(Set<Integer> indexes) {
-        indexes.addAll(masts.keySet());
-        indexes.addAll(extraOccupied);
-        return new ShotResultDto(ShotResult.SHIP_SUNK, indexes);
-    }
-
-    public boolean isDead() {
+    boolean isDead() {
         return masts.values()
                 .stream()
                 .allMatch(m -> m == MastState.HIT);
     }
 
-    public List<Integer> retrieveOccupiedCells() {
+    List<Integer> retrieveOccupiedCells() {
         List<Integer> occupiedCells = new ArrayList<>();
         occupiedCells.addAll(masts.keySet());
         occupiedCells.addAll(extraOccupied);
         return occupiedCells;
+    }
+
+    private ShotResultDto getResultOfDeadShip(Set<Integer> indexes) {
+        indexes.addAll(masts.keySet());
+        indexes.addAll(extraOccupied);
+        return new ShotResultDto(ShotResult.SHIP_SUNK, indexes);
     }
 }

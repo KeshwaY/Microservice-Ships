@@ -2,9 +2,6 @@ package com.github.ships.ships;
 
 import com.github.ships.ships.board.Board;
 import com.github.ships.ships.board.Cell;
-import com.github.ships.ships.fleet.Direction;
-import com.github.ships.ships.fleet.Ship;
-import com.github.ships.ships.fleet.ShipType;
 
 import java.awt.event.WindowAdapter;
 import java.util.HashMap;
