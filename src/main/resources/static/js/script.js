@@ -1,4 +1,6 @@
 const body = document.getElementsByTagName("body")[0]
+var menuMusic = new Audio('/static/assets/audio/menuambience.mp3')
+var gamePendingMusic = new Audio('/static/assets/audio/gameambience.mp3')
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
@@ -24,6 +26,9 @@ let enemyTurn = "OPONENT's TURN"
 let gameid
 // CELL INDEXING FROM [
 let id = 1
+
+menuMusic.loop=true;
+menuMusic.play()
 
 // CONNECT WITH BACKEND
 connect()
