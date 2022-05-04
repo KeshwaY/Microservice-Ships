@@ -17,7 +17,7 @@ body {
     color: var(--nord4) ;
     margin: auto;
     font-size: 2vw;
-    text-align: center
+    text-align: left
 }
 
 .turn {
