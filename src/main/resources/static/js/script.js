@@ -78,17 +78,26 @@ function connect() {
                     break
                 }
                 case "ENEMY_MISS": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotWaterSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     swapBoards()
                     break
                 }
                 case "ENEMY_SHOT": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotMastSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     break
                 }
                 case "ENEMY_WIN": {
+                    shotMastSound.load()
+                    shotWaterSound.load()
+                    shotMastSound.play()
                     let cell = event['cell']
                     await shoot(cell, 'enemy')
                     alert('YOU LOST!')
@@ -128,18 +137,23 @@ async function shoot(x, type) {
     console.log(shootMessage);
     switch (shotResult) {
         case 'MISS': {
+            shotMastSound.load()
+            shotWaterSound.load()
             shotWaterSound.play()
             await shootCell(cellId, shootWaterColor)
             swapBoards()
             break
         }
         case 'SHIP_HIT': {
+            shotMastSound.load()
+            shotWaterSound.load()
             shotMastSound.play()
             await shootCell(cellId, shootShipColor)
-            shotMastSound.play()
             break
         }
         case 'SHIP_SUNK': {
+            shotMastSound.load()
+            shotWaterSound.load()
             shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
@@ -148,6 +162,8 @@ async function shoot(x, type) {
             break
         }
         case 'FLEET_SUNK': {
+            shotMastSound.load()
+            shotWaterSound.load()
             shotMastSound.play()
             let cellsList = shootMessage['cells']
             cellsList.forEach(c => {
