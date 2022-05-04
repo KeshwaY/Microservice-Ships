@@ -1,6 +1,6 @@
 const body = document.getElementsByTagName("body")[0]
-var menuMusic = new Audio('/static/assets/audio/menuambience.mp3')
-var gamePendingMusic = new Audio('/static/assets/audio/gameambience.mp3')
+var menuMusic = new Audio('../assets/audio/menuambience.mp3')
+var gameInMusic = new Audio('../assets/audio/gameambience.mp3')
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
@@ -52,7 +52,6 @@ function getGameIDFromPlayer() {
     console.log(gameID)
     joinGame(gameID)
 }
-
 
 function connect() {
     const socket = new SockJS('/ships-websocket')
@@ -175,7 +174,6 @@ async function resetBoardContainer() {
     boardContainer.style.borderColor = "#3b4252"
 }
 
-
 async function createGame() {
     enemyAnimation = 'fadein'
     playerAnimation = 'fadeout'
@@ -220,9 +218,15 @@ async function createGame() {
     body.appendChild(displayId)
     console.log(gameID)
     init('player', fleet)
+    menuMusic.pause()
+    gameInMusic.loop=true;
+    gameInMusic.play()
 }
 
 async function joinGame(gameID) {
+    menuMusic.pause()
+    gameInMusic.loop=true;
+    gameInMusic.play()
     enemyAnimation = 'fadeout'
     playerAnimation = 'fadein'
     enemyLeft = '-50vw'
@@ -245,7 +249,6 @@ async function joinGame(gameID) {
 
     const fleet = joinedGame['fleet']
 
-
     init('player', fleet)
     init('enemy')
     let turn = document.createElement('p');
@@ -253,7 +256,6 @@ async function joinGame(gameID) {
     turn.classList.add('turn')
     turn.innerText = enemyTurn
     body.appendChild(turn)
-
 }
 
 function swapBoards() {
