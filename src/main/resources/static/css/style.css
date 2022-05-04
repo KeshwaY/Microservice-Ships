@@ -16,7 +16,8 @@ body {
     transition: 0.5s;
     color: var(--nord4) ;
     margin: auto;
-    font-size: 2vw;
+    font-size: 0.8vw;
+    position: absolute;
     text-align: left
 }
 
@@ -28,7 +29,6 @@ body {
     margin: auto;
     font-size: 2vw;
 }
-
 
 .gamecreate {
     transition: 0.2s;
