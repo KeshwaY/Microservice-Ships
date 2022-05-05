@@ -1,10 +1,13 @@
 :root {
-    /*Dark mode*/
     --nord0: #2e3440;
     --nord1: #3b4252;
     --nord2: #434c5e;
     --nord3: #4c566a;
     --nord4: #d8dee9;
+    --nord5: #e5e9f0;
+    --nord6: #eceff4;
+    --nord11: #bf616a;
+
 }
 
 body {
@@ -12,79 +15,63 @@ body {
     background-color: var(--nord0);
 }
 
+/*Buttons*/
+.menuButton {
+    transition: 0.2s;
+    position: absolute;
+    width: 40vw;
+    height: 5vw;
+    background: var(--nord0);
+    border-radius: 0.5vw;
+    border: solid 0.1vw;
+    border-color: var(--nord4);
+    font-size: 1.5vw;
+}
+
+.menuButton:hover {
+    background: var(--nord1);
+    border-color: var(--nord0);
+}
+
+.gameCreate {
+    top: 10vw;
+}
+
+.gameJoin {
+    top: 16vw;
+}
+
+/*Text-Based*/
 .gameId {
     transition: 0.5s;
-    color: var(--nord4) ;
+    color: var(--nord4);
     margin: auto;
     font-size: 0.8vw;
     position: absolute;
     text-align: left
 }
 
+.text {
+    color: var(--nord4);
+}
+
 .turn {
     transition: 0.5s;
     top: 1.3vw;
     position: absolute;
-    color: var(--nord4) ;
+    color: var(--nord4);
     margin: auto;
     font-size: 2vw;
 }
 
-.gamecreate {
-    transition: 0.2s;
-    position: absolute;
-    top: 10vw;
-    width: 40vw;
-    height: 5vw;
-    background: var(--nord0);
-    border-radius: 0.5vw;
-    border: solid 0.1vw ;
-    border-color: var(--nord4);
-    color: var(--nord4);
-    font-size: 1.5vw;
-}
-
-.gamecreate:hover {
-    background: var(--nord1);
-    border-color: var(--nord0);
-}
-
-.gamejoin {
-    transition: 0.2s;
-    position: absolute;
-    top: 16vw;
-    width: 40vw;
-    height: 5vw;
-    background: var(--nord0);
-    border-radius: 0.5vw;
-    border: solid 0.1vw ;
-    border-color: var(--nord4);
-    color: var(--nord4);
-    font-size: 1.5vw;
-}
-
-.gamejoin:hover {
-    background: var(--nord1);
-    border-color: var(--nord0);
-}
-
-.player {
-    left: -50vw;
-    opacity: 0;
-}
-
-.enemy {
-    left: -50vw;
-    opacity: 0;
-}
-
 .game-id {
     position: absolute;
-    color: var(--nord4) ;
+    color: var(--nord4);
     margin: auto;
     font-size: 0.7vw;
 }
 
+/*Containers*/
 .boardContainer {
     transition: 0.5s;
     position: absolute;
@@ -110,6 +97,17 @@ body {
     border-radius: 10px;
 }
 
+.player {
+    left: -50vw;
+    opacity: 0;
+}
+
+.enemy {
+    left: -50vw;
+    opacity: 0;
+}
+
+/*Cells*/
 .cell {
     height: 3.6vw;
     width: 3.6vw;
@@ -134,14 +132,13 @@ body {
 }
 
 .shipHit {
-    background-color: #bf616a;
-    border-color: #2e3440;
+    background-color: var(--nord11);
+    border-color: var(--nord0);
     cursor: default;
     pointer-events: none;
 }
 
 .cellHit {
-    /*background-color: #81a1c1;*/
     background-color: var(--nord1);
     cursor: default;
     pointer-events: none;
@@ -151,6 +148,7 @@ body {
     pointer-events: none;
 }
 
+/*Animations*/
 .fadeout {
     animation-name: fadeout-animation;
     animation-duration: 2s;
