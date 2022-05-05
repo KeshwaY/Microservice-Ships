@@ -57,7 +57,7 @@ class GameService {
     @Transactional
     public GameDto join(String opponentEmail, String gameId) {
         Game game = repository.findById(gameId).orElseThrow(NotFoundException::new);
-//        if (game.getOpponent() != null || game.getOwner().getEmail().equals(opponentEmail)) throw new ResourceAlreadyExistsException();
+        if (game.getOpponent() != null || game.getOwner().getEmail().equals(opponentEmail)) throw new ResourceAlreadyExistsException();
         User opponent = userService.getRawUser(opponentEmail);
         game.setOpponent(opponent);
         Board ownerBoard = ((List<Board>) game.getBoards()).get(0);
