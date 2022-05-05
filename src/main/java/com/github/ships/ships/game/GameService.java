@@ -15,6 +15,7 @@ import com.github.ships.ships.websocket.EventType;
 import com.github.ships.ships.websocket.WebsocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.tinylog.Logger;
 
 import javax.sql.rowset.Joinable;
@@ -53,13 +54,13 @@ class GameService {
         return new GameDto(game.getId(), board, fleet.getShips());
     }
 
-    GameDto join(String opponentEmail, String gameId) {
+    @Transactional
+    public GameDto join(String opponentEmail, String gameId) {
         Game game = repository.findById(gameId).orElseThrow(NotFoundException::new);
-        if (game.getBoards().size() == 2) throw new ResourceAlreadyExistsException();
+        if (game.getOpponent() != null || game.getOwner().getEmail().equals(opponentEmail)) throw new ResourceAlreadyExistsException();
         User opponent = userService.getRawUser(opponentEmail);
         game.setOpponent(opponent);
         Board ownerBoard = ((List<Board>) game.getBoards()).get(0);
-        if (ownerBoard.getPlayer().getEmail().equals(opponent.getEmail())) throw new ResourceAlreadyExistsException();
         BoardGetDto board = boardService.createBoard(
                 opponent,
                 game,
