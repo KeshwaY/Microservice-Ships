@@ -90,6 +90,9 @@ function initializeBoard(type, fleet) {
     container.classList.add(type)
     container.setAttribute('id', type)
 
+    var horizontalCoordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+        'Q', 'R', 'S', 'T']
+
     for (let i = 0; i < width * height; i++) {
         let cell = document.createElement("div")
         cell.classList.add('cell')
@@ -97,6 +100,12 @@ function initializeBoard(type, fleet) {
         if (type === 'enemy') {
             cell.setAttribute('onclick', 'shoot(this)')
             cell.style.cursor = 'crosshair'
+
+            var coordinate = horizontalCoordinates[i % 10] + +(((i / width * 10 - i % 10) / 10) + 1)
+            let displayCellCoordinate = document.createElement('div')
+            displayCellCoordinate.classList.add('cellCoordinate')
+            displayCellCoordinate.textContent = coordinate
+            cell.appendChild(displayCellCoordinate)
         }
         id++
         container.appendChild(cell)
