@@ -19,8 +19,8 @@ class Ship {
         if (!masts.containsKey(index)) return new ShotResultDto(ShotResult.MISS, Set.of());
         masts.put(index, MastState.HIT);
         Set<Integer> indexes = new LinkedHashSet<>();
-        indexes.add(index);
         if (!isDead()) {
+            indexes.add(index);
             return new ShotResultDto(ShotResult.SHIP_HIT, indexes);
         }
         return getResultOfDeadShip(indexes);
@@ -40,6 +40,8 @@ class Ship {
     }
 
     private ShotResultDto getResultOfDeadShip(Set<Integer> indexes) {
+        indexes.addAll(masts.keySet());
+        indexes.add(0);
         indexes.addAll(extraOccupied);
         return new ShotResultDto(ShotResult.SHIP_SUNK, indexes);
     }

@@ -7,6 +7,7 @@
     --nord5: #e5e9f0;
     --nord6: #eceff4;
     --nord11: #bf616a;
+    --nord12: #F2B7BD;
 
 }
 
@@ -164,6 +165,12 @@ body {
 
 .cellHit {
     background-color: var(--nord1);
+    cursor: default;
+    pointer-events: none;
+}
+
+.cellSunk {
+    background-color: var(--nord12);
     cursor: default;
     pointer-events: none;
 }
