@@ -320,9 +320,15 @@ async function shoot(x, type) {
             shotWaterSound.load()
             shotMastSound.play()
             let cellsList = shootMessage['cells']
-            cellsList.forEach(c => {
+
+            await cellsList.slice(0, cellsList.indexOf(0)).forEach(c => {
+                shootCell(c, 'cellSunk')
+            })
+
+            cellsList.slice(cellsList.indexOf(0) + 1, cellsList.length).forEach(c => {
                 shootCell(c, 'cellHit')
             })
+
             activateCells()
             break
         }
