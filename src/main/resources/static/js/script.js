@@ -6,8 +6,7 @@ const shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
-const ip = 'http://localhost'
-const port = '8080'
+const ip = 'https://polar-bastion-35217.herokuapp.com'
 const apiVersion = 'v1'
 
 // BOARDS PROPERTIES
@@ -141,7 +140,7 @@ async function createGame() {
     header.append('Content-Type', 'application/json')
     header.append('Authorization', 'Basic dGVzdEBlbWFpbC5jb206dGVzdA==')
 
-    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/games"
+    const requestURL = ip + "/api/" + apiVersion + "/games"
     const request = new Request(requestURL, {
         method: 'POST',
         body: JSON.stringify(game),
@@ -177,7 +176,7 @@ async function joinGame(gameID) {
     enemyLeft = '-50vw'
     playerLeft = '30vw'
     await resetBoardContainer()
-    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/games/" + gameID
+    const requestURL = ip + "/api/" + apiVersion + "/games/" + gameID
     const request = new Request(requestURL, {
         method: 'POST',
         mode: 'cors'
@@ -285,7 +284,7 @@ async function shoot(x, type) {
         return
     }
     let cellId = x.id.toString().split(":")[0]
-    const requestURL = ip + ":" + port + "/api/" + apiVersion + "/shots?game-id=" + gameid + "&cell-id=" + cellId
+    const requestURL = ip + "/api/" + apiVersion + "/shots?game-id=" + gameid + "&cell-id=" + cellId
     const request = new Request(requestURL, {
         method: 'POST',
         mode: 'cors'

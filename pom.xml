@@ -208,9 +208,6 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <requireMavenVersion>
-                                    <version>${version.maven}</version>
-                                </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>${java.version}</version>
                                 </requireJavaVersion>
@@ -240,13 +237,6 @@
                         <version>${version.plugin.checkstyle}</version>
                     </dependency>
                 </dependencies>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
