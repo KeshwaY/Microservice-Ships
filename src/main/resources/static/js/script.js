@@ -321,7 +321,8 @@ async function shoot(x, type) {
             shotWaterSound.load()
             shotMastSound.play()
             let cellsList = shootMessage['cells']
-            cellsList.forEach(c => {
+            await shootCell(cellsList[0], 'shipHit')
+            cellsList.slice(1, cellsList.length).forEach(c => {
                 shootCell(c, 'cellHit')
             })
             activateCells()
