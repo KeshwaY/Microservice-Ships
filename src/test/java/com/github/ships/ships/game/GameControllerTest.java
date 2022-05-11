@@ -51,14 +51,13 @@ public class GameControllerTest extends AbstractTestNGSpringContextTests {
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
         String requestJson = ow.writeValueAsString(gamePostDto);
-        System.out.println(requestJson);
+
         mvc.perform(post("/api/v1/games")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(user("test@email.com").password("test").authorities(new SimpleGrantedAuthority("BASIC_USER")))
                 )
-                .andDo(print())
                 .andExpect(status().isCreated());
     }
 }
