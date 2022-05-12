@@ -1,8 +1,6 @@
 package com.github.ships.ships.fleet;
 
-import com.github.ships.ships.NotFoundException;
 import com.github.ships.ships.ShotResult;
-import com.github.ships.ships.game.Game;
 import com.github.ships.ships.users.User;
 import lombok.*;
 import org.springframework.data.annotation.Id;
