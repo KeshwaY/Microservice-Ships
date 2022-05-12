@@ -15,11 +15,11 @@ public class StatsService {
         this.statsRepository = gameResultRepository;
     }
 
-    public String createStat(User player) {
+    public String createStats(User player) {
         PlayerStats playerStats = new PlayerStats(player);
         statsRepository.save(playerStats);
         Logger.info(String.format("Statistics for new user %s are created", playerStats.getPlayer()));
-        return "create stat";
+        return "create stats";
     }
 
     public String getStats(User player) {

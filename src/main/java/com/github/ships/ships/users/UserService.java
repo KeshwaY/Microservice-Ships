@@ -43,7 +43,7 @@ public class UserService {
         user.setCreatedDate(LocalDateTime.now());
         user.setRole(getUserRole());
         user.setPassword(passwordEncoder.encode(userPostDTO.getPassword()));
-        statsService.createStat(user);
+        statsService.createStats(user);
         return mapper.userToUserGetDTO(repository.save(user));
     }
 

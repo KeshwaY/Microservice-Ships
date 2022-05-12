@@ -21,7 +21,7 @@ class StatsController {
 
     @PostMapping
     public ResponseEntity<String> createStats() {
-        String s = statsService.createStat(userService.getRawUser("rwar@s.s"));
+        String s = statsService.createStats(userService.getRawUser("rwar@s.s"));
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 
