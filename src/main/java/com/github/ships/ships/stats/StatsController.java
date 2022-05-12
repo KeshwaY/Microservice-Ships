@@ -36,5 +36,4 @@ class StatsController {
         String s = statsService.getStats(userService.getRawUser("rwar@s.s"));
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
-
 }

@@ -29,15 +29,17 @@ public class StatsService {
         statsRepository.save(playerStats);
         Logger.info(String.format("Statistics provided for user: %s - winnings: %d",
                 playerStats.getPlayer().getName(), playerStats.getWinnings()));
-        return "get stat";
+        return String.format("%s - winnings: %d", playerStats.getPlayer().getName(), playerStats.getWinnings());
     }
 
     public String updateStats(User player) {
-        PlayerStats playerStats = new PlayerStats(player);
+        PlayerStats playerStats = statsRepository.findByPlayer(player).get();
+        List<PlayerStats> gameResults = statsRepository.findAll();
+        playerStats = gameResults.get(0);
         playerStats.increment();
         statsRepository.save(playerStats);
         Logger.info(String.format("Statistics updated for user: %s - winnings: %d",
                 playerStats.getPlayer().getName(), playerStats.getWinnings()));
-        return "post stat";
+        return String.format("%s - winnings: %d", playerStats.getPlayer().getName(), playerStats.getWinnings());
     }
 }
