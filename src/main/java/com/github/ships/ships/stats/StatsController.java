@@ -19,6 +19,12 @@ class StatsController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public ResponseEntity<String> getStats() {
+        String s = statsService.getStats();
+        return new ResponseEntity<>(s, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<String> createStats() {
         String s = statsService.createStats(userService.getRawUser("rwar@s.s"));
@@ -28,12 +34,6 @@ class StatsController {
     @PutMapping
     public ResponseEntity<String> updateStat() {
         String s = statsService.updateStats(userService.getRawUser("rwar@s.s"));
-        return new ResponseEntity<>(s, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public ResponseEntity<String> getStats() {
-        String s = statsService.getStats(userService.getRawUser("rwar@s.s"));
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }

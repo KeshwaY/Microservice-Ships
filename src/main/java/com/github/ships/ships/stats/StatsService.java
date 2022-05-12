@@ -22,20 +22,20 @@ public class StatsService {
         return "create stats";
     }
 
-    public String getStats(User player) {
-        PlayerStats playerStats = statsRepository.findByPlayer(player).get();
-        List<PlayerStats> gameResults = statsRepository.findAll();
-        playerStats = gameResults.get(0);
-        statsRepository.save(playerStats);
-        Logger.info(String.format("Statistics provided for user: %s - winnings: %d",
-                playerStats.getPlayer().getName(), playerStats.getWinnings()));
-        return String.format("%s - winnings: %d", playerStats.getPlayer().getName(), playerStats.getWinnings());
+    public String getStats() {
+        List<PlayerStats> stats = statsRepository.findAll();
+//        Logger.info(String.format("Statistics provided for user: %s - winnings: %d",
+//                playerStats.getPlayer().getName(), playerStats.getWinnings()));
+        StringBuilder sb = new StringBuilder();
+        stats.forEach(s -> {
+            sb.append(String.format("%s - winnings: %d", s.getPlayer().getName(), s.getWinnings()));
+            sb.append(System.lineSeparator());
+        });
+        return String.format(sb.toString());
     }
 
     public String updateStats(User player) {
         PlayerStats playerStats = statsRepository.findByPlayer(player).get();
-        List<PlayerStats> gameResults = statsRepository.findAll();
-        playerStats = gameResults.get(0);
         playerStats.increment();
         statsRepository.save(playerStats);
         Logger.info(String.format("Statistics updated for user: %s - winnings: %d",
