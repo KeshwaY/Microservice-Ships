@@ -5,8 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor @NoArgsConstructor @Getter @Setter
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class BoardPostDto {
+    @Min(10)
+    @Max(15)
     private int width;
+    @Min(10)
+    @Max(15)
     private int height;
 }

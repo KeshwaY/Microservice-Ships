@@ -9,14 +9,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 
-class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
 
     private final String username;
     private final String password;
 
     private final Role role;
 
-    UserDetailsImpl(User user) {
+    public UserDetailsImpl(User user) {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.role = user.getRole();
