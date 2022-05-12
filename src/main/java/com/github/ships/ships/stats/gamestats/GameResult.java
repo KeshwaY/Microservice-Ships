@@ -1,4 +1,4 @@
-package com.github.ships.ships.stats;
+package com.github.ships.ships.stats.gamestats;
 
 import com.github.ships.ships.game.Game;
 import com.github.ships.ships.users.User;

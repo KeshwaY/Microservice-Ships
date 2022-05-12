@@ -1,4 +1,4 @@
-package com.github.ships.ships.stats;
+package com.github.ships.ships.stats.userstats;
 
 import com.github.ships.ships.ShotResult;
 import com.github.ships.ships.users.User;
@@ -29,6 +29,12 @@ class UserStats {
         shotResults.put(ShotResult.SHIP_HIT, 0);
         shotResults.put(ShotResult.SHIP_SUNK, 0);
         shotResults.put(ShotResult.FLEET_SUNK, 0);
+    }
+
+    UserStats(String id, User player, @NonNull EnumMap<ShotResult, Integer> shotResults) {
+        this.id = id;
+        this.player = player;
+        this.shotResults = shotResults;
     }
 
     void increment(ShotResult shotResult) {
