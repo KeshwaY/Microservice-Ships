@@ -54,6 +54,6 @@ public class Fleet {
         ships.forEach(ship -> {
             occupiedCells.addAll(ship.retrieveOccupiedCells());
         });
-        return occupiedCells;
+        return occupiedCells.stream().distinct().toList();
     }
 }
