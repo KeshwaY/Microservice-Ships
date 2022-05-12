@@ -17,9 +17,6 @@ import java.util.ArrayList;
 
 import static org.testng.Assert.*;
 
-/**
- * @author Anna Ovcharenko
- */
 @Listeners({MockitoTestNGListener.class})
 public class BoardServiceTest {
     @Mock
