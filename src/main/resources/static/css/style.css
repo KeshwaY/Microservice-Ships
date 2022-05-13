@@ -48,12 +48,12 @@ body {
 
 .statisticsText {
     position: center;
-    margin: auto;
+    margin: 1vw;
     transition: 0.6s;
     color: var(--nord4);
     text-align: left;
-    font-family: "Fira Code";
-    font-size: 2vw;
+    font-family: 'RobotoMono-VariableFont_wght';
+    font-size: 1.5vw;
 }
 
 .closeStatistics {
@@ -144,6 +144,11 @@ body {
 @font-face {
     font-family: "VT323-Regular";
     src: url('VT323-Regular.ttf')
+}
+
+@font-face {
+    font-family: "RobotoMono-VariableFont_wght";
+    src: url('RobotoMono-VariableFont_wght.ttf')
 }
 
 .cellCoordinate {

@@ -4,8 +4,6 @@ import com.github.ships.ships.users.User;
 import org.springframework.stereotype.Service;
 import org.tinylog.Logger;
 
-import java.util.List;
-
 @Service
 public class StatsService {
 
@@ -22,15 +20,21 @@ public class StatsService {
         return "create stats";
     }
 
-    public String getStats() {
-        List<PlayerStats> stats = statsRepository.findAll();
-        StringBuilder sb = new StringBuilder();
-        stats.forEach(s -> {
-            sb.append(String.format("%s - winnings: %d", s.getPlayer().getName(), s.getWinnings()));
-            sb.append(System.lineSeparator());
-            Logger.info(String.format("Statistics provided"));
-        });
-        return String.format(sb.toString());
+//    public String getStats() {
+//        List<PlayerStats> stats = statsRepository.findAll();
+//        StringBuilder sb = new StringBuilder();
+//        stats.forEach(s -> {
+//            sb.append(String.format("%s - winnings: %d", s.getPlayer().getName(), s.getWinnings()));
+//            sb.append(System.lineSeparator());
+//            Logger.info(String.format("Statistics provided"));
+//        });
+//        return String.format(sb.toString());
+//    }
+
+    public StatisticsGetDTO getStats() {
+        Statistics statistics = new Statistics(statsRepository.findAll());
+        Logger.info(String.format("Statistics provided"));
+        return new StatisticsGetDTO(statistics.getStatistics());
     }
 
     public String updateStats(User player) {

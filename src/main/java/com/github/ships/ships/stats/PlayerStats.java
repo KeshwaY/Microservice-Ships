@@ -36,4 +36,9 @@ class PlayerStats {
     void increment() {
         winnings++;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s - winnings: %d", this.player.getName(), this.winnings);
+    }
 }

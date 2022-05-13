@@ -20,9 +20,9 @@ class StatsController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getStats() {
-        String s = statsService.getStats();
-        return new ResponseEntity<>(s, HttpStatus.OK);
+    public ResponseEntity<StatisticsGetDTO> getStats() {
+        StatisticsGetDTO statisticsGetDTO = statsService.getStats();
+        return new ResponseEntity<>(statisticsGetDTO, HttpStatus.OK);
     }
 
     @PostMapping

@@ -7,7 +7,7 @@ const shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
 // const ip = 'https://polar-bastion-35217.herokuapp.com'
-const ip = '0.0.0.0:8080'
+const ip = 'http://localhost:8080'
 const apiVersion = 'v1'
 
 let createButton
@@ -218,30 +218,39 @@ async function getStatistics() {
     boardContainer.appendChild(closeButton)
     closeButton.removeAttribute("hidden")
 
-    // const requestURL = ip + "/api/" + apiVersion + "/stats"
-    const requestURL = "/api/v1/stats"
+    const requestURL = ip + "/api/" + apiVersion + "/stats"
     const request = new Request(requestURL, {
         method: 'GET',
         mode: 'cors'
     })
-    const response = await fetch(request)
-    const statsText = await response.text()
-    const textDiv = document.createElement("p")
-    textDiv.setAttribute("id", "textDiv")
-    textDiv.classList.add('statisticsText')
-    textDiv.textContent = statsText;
-    boardContainer.appendChild(textDiv)
 
+    const response = await fetch(request)
+    const returnedStatistics = await response.json()
+    const statistics = returnedStatistics['statistics']
+    for (let i = 0; i < statistics.length; i++) {
+        const textDiv = document.createElement("p")
+        textDiv.setAttribute("id", "textDiv" + i)
+        textDiv.classList.add('statisticsText')
+        textDiv.textContent = statistics[i]
+        boardContainer.appendChild(textDiv)
+    }
 }
 
 async function closeStatistics() {
     const boardContainer = document.getElementById("boardContainer")
-    boardContainer.removeChild(document.getElementById("textDiv"))
     boardContainer.removeChild(document.getElementById("closeStatistics"))
 
+    let textDivs = document.getElementsByTagName("p")
+    let elementsNumber = textDivs.length
+    for (let i = 0; i < elementsNumber; i++) {
+        boardContainer.removeChild(document.getElementById("textDiv" + i))
+    }
     boardContainer.appendChild(createButton)
     boardContainer.appendChild(joinButton)
     boardContainer.appendChild(statisticsButton)
+
+    boardContainer.style.backgroundColor = "#2e3440"
+    boardContainer.style.borderColor = "#2e3440"
 }
 
 async function createShips(fleet, type) {
