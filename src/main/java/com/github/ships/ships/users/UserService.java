@@ -6,6 +6,7 @@ import com.github.ships.ships.ResourceAlreadyExistsException;
 import com.github.ships.ships.security.authorities.AuthorityRepository;
 import com.github.ships.ships.security.roles.Role;
 import com.github.ships.ships.security.roles.RoleRepository;
+import com.github.ships.ships.stats.StatsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +21,20 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper mapper;
 
+    private final StatsService statsService;
+
     public UserService(
             UserRepository repository,
             RoleRepository roleRepository,
             AuthorityRepository authorityRepository,
             PasswordEncoder passwordEncoder,
-            UserMapper mapper
-    ) {
+            UserMapper mapper, StatsService statsService) {
         this.repository = repository;
         this.roleRepository = roleRepository;
         this.authorityRepository = authorityRepository;
         this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
+        this.statsService = statsService;
     }
 
     public UserGetDTO create(UserPostDTO userPostDTO) {
@@ -40,6 +43,7 @@ public class UserService {
         user.setCreatedDate(LocalDateTime.now());
         user.setRole(getUserRole());
         user.setPassword(passwordEncoder.encode(userPostDTO.getPassword()));
+        statsService.createStats(user);
         return mapper.userToUserGetDTO(repository.save(user));
     }
 

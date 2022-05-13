@@ -6,9 +6,14 @@ const shotWaterSound = new Audio('../assets/audio/shot_water.mp3')
 
 // REQUEST URL BASE
 // TODO: MAKE IT ENV VARIABLE
-const ip = 'https://polar-bastion-35217.herokuapp.com'
+// const ip = 'https://polar-bastion-35217.herokuapp.com'
+const ip = 'http://localhost:8080'
 const apiVersion = 'v1'
 
+let createButton
+let joinButton
+let statisticsButton
+let closeButton = document.getElementById("closeStatistics")
 // BOARDS PROPERTIES
 let enemyAnimation
 let playerAnimation
@@ -207,6 +212,47 @@ function getGameIDFromPlayer() {
     joinGame(gameID)
 }
 
+async function getStatistics() {
+    await resetBoardContainer()
+    const boardContainer = document.getElementById("boardContainer")
+    boardContainer.appendChild(closeButton)
+    closeButton.removeAttribute("hidden")
+
+    const requestURL = ip + "/api/" + apiVersion + "/stats"
+    const request = new Request(requestURL, {
+        method: 'GET',
+        mode: 'cors'
+    })
+
+    const response = await fetch(request)
+    const returnedStatistics = await response.json()
+    const statistics = returnedStatistics['statistics']
+    for (let i = 0; i < statistics.length; i++) {
+        const textDiv = document.createElement("p")
+        textDiv.setAttribute("id", "textDiv" + i)
+        textDiv.classList.add('statisticsText')
+        textDiv.textContent = statistics[i]
+        boardContainer.appendChild(textDiv)
+    }
+}
+
+async function closeStatistics() {
+    const boardContainer = document.getElementById("boardContainer")
+    boardContainer.removeChild(document.getElementById("closeStatistics"))
+
+    let textDivs = document.getElementsByTagName("p")
+    let elementsNumber = textDivs.length
+    for (let i = 0; i < elementsNumber; i++) {
+        boardContainer.removeChild(document.getElementById("textDiv" + i))
+    }
+    boardContainer.appendChild(createButton)
+    boardContainer.appendChild(joinButton)
+    boardContainer.appendChild(statisticsButton)
+
+    boardContainer.style.backgroundColor = "#2e3440"
+    boardContainer.style.borderColor = "#2e3440"
+}
+
 async function createShips(fleet, type) {
     if (type === 'player') {
         fleet.forEach(ship => ship["masts"].forEach(cellID => {
@@ -217,8 +263,9 @@ async function createShips(fleet, type) {
 
 async function resetBoardContainer() {
     const boardContainer = document.getElementById("boardContainer")
-    boardContainer.removeChild(document.getElementById("gameCreate"))
-    boardContainer.removeChild(document.getElementById("gameJoin"))
+    createButton = boardContainer.removeChild(document.getElementById("gameCreate"))
+    joinButton = boardContainer.removeChild(document.getElementById("gameJoin"))
+    statisticsButton = boardContainer.removeChild(document.getElementById("statistics"))
     boardContainer.style.backgroundColor = "#3b4252"
     boardContainer.style.borderColor = "#3b4252"
 }
