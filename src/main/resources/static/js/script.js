@@ -216,6 +216,7 @@ async function getStatistics() {
     await resetBoardContainer()
     const boardContainer = document.getElementById("boardContainer")
     boardContainer.appendChild(closeButton)
+    closeButton.removeAttribute("hidden")
 
     // const requestURL = ip + "/api/" + apiVersion + "/stats"
     const requestURL = "/api/v1/stats"
