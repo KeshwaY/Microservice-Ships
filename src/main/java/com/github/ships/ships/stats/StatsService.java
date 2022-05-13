@@ -18,7 +18,7 @@ public class StatsService {
     public String createStats(User player) {
         PlayerStats playerStats = new PlayerStats(player);
         statsRepository.save(playerStats);
-        Logger.info(String.format("Statistics for new user %s are created", playerStats.getPlayer()));
+        Logger.info(String.format("User %s statistics created", playerStats.getPlayer()));
         return "create stats";
     }
 
@@ -37,7 +37,7 @@ public class StatsService {
         PlayerStats playerStats = statsRepository.findByPlayer(player).get();
         playerStats.increment();
         statsRepository.save(playerStats);
-        Logger.info(String.format("Statistics updated for user: %s - winnings: %d",
+        Logger.info(String.format("User: %s statistics updated - winnings: %d",
                 playerStats.getPlayer().getName(), playerStats.getWinnings()));
         return String.format("%s - winnings: %d", playerStats.getPlayer().getName(), playerStats.getWinnings());
     }
