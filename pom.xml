@@ -28,7 +28,7 @@
         <version.dependency.tinylog-impl>2.4.1</version.dependency.tinylog-impl>
         <version.dependency.slf4j-tinylog>2.4.1</version.dependency.slf4j-tinylog>
         <version.dependency.jacoco>0.8.7</version.dependency.jacoco>
-        <version.dependency.testng>7.5</version.dependency.testng>
+        <version.dependency.testng>7.7.0</version.dependency.testng>
         <version.dependency.mockito-core>4.5.1</version.dependency.mockito-core>
         <version.dependency.lombok>1.18.24</version.dependency.lombok>
 
